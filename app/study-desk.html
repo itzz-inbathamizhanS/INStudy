@@ -1,0 +1,1495 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Inba Study Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: left rail on desktop, bottom tab bar on phone; one working column, hairline structure, olive accent (service-green), square corners */
+:root{
+  --bg:#f3f4f1; --surface:#ffffff; --sunk:#e9ebe5; --line:#d5d8cf; --ink:#14170f; --muted:#5f6557;
+  --accent:#4f5f1f; --accent-ink:#ffffff; --accent-soft:#e3e8d2;
+  --good:#2f7a46; --warn:#a86a12; --bad:#b0362b;
+  --h0:#e4e6df; --h1:#c7d2a3; --h2:#9fb065; --h3:#6f8235; --h4:#465518;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:3px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111310; --surface:#181b16; --sunk:#20241d; --line:#2e3329; --ink:#e8eae3; --muted:#9aa190;
+  --accent:#b4c46f; --accent-ink:#151a07; --accent-soft:#2a321a;
+  --good:#6cc287; --warn:#e2a74a; --bad:#ef7d70;
+  --h0:#22261f; --h1:#37421f; --h2:#56692a; --h3:#7f9638; --h4:#b4c46f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111310; --surface:#181b16; --sunk:#20241d; --line:#2e3329; --ink:#e8eae3; --muted:#9aa190;
+  --accent:#b4c46f; --accent-ink:#151a07; --accent-soft:#2a321a;
+  --good:#6cc287; --warn:#e2a74a; --bad:#ef7d70;
+  --h0:#22261f; --h1:#37421f; --h2:#56692a; --h3:#7f9638; --h4:#b4c46f; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{display:grid;grid-template-columns:208px 1fr;min-height:100%}
+.rail{border-right:1px solid var(--line);padding:24px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px;background:var(--bg)}
+.brand{font:800 19px/1 var(--f-display);font-stretch:85%;letter-spacing:.01em;text-transform:uppercase;padding:0 10px 18px}
+.brand small{display:block;font:500 11px/1.4 var(--f-mono);color:var(--muted);text-transform:none;letter-spacing:0;margin-top:6px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav button{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--r);color:var(--muted);font-weight:500}
+.nav button svg{width:18px;height:18px;flex:none}
+.nav button:hover{color:var(--ink);background:var(--sunk)}
+.nav button[aria-current="page"]{color:var(--ink);background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.nav button:focus-visible{outline:2px solid var(--accent)}
+.rail .sync{margin-top:auto;font:12px/1.4 var(--f-mono);color:var(--muted);padding:0 10px}
+main{min-width:0;padding-block:28px 96px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:940px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+[hidden]{display:none!important}
+.view{display:flex;flex-direction:column;gap:28px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+h1{font:800 clamp(28px,5vw,40px)/1 var(--f-display);font-stretch:80%;text-transform:uppercase;letter-spacing:.005em;margin:0;text-wrap:balance}
+h2{font:700 13px/1.2 var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px}
+.sub{color:var(--muted);margin:6px 0 0;font-size:14px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.pad{padding:18px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spread{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.btn{all:unset;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 14px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);font-weight:500;font-size:14px;line-height:1.2;white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.btn.ghost:hover{color:var(--ink)}
+.btn.sm{padding:6px 10px;font-size:13px}
+.btn[disabled]{opacity:.45;pointer-events:none}
+input[type=text],input[type=number],input[type=date],select,textarea{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:8px 10px;min-width:0;width:100%}
+textarea{resize:vertical;min-height:120px;line-height:1.55}
+label.f{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted);font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.05em;min-width:0}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{all:unset;cursor:pointer;padding:10px 14px;color:var(--muted);font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tabs button:focus-visible{outline:2px solid var(--accent)}
+.bar{height:6px;background:var(--sunk);border-radius:1px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.kpi{padding:14px 16px;border-left:1px solid var(--line);min-width:0}
+.kpi:first-child{border-left:0}
+.kpi b{display:block;font:700 26px/1.1 var(--f-display);font-stretch:85%;font-variant-numeric:tabular-nums}
+.kpi span{font:12px/1.3 var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.list{display:flex;flex-direction:column}
+.list>*{border-top:1px solid var(--line)}
+.list>*:first-child{border-top:0}
+.slot{display:grid;grid-template-columns:96px 1fr auto;gap:14px;align-items:center;padding:14px 18px}
+.slot .t{font:500 13px/1.3 var(--f-mono);color:var(--muted)}
+.slot .w{font-weight:600}
+.slot .d{font-size:13px;color:var(--muted)}
+.slot.now{background:var(--accent-soft)}
+.tag{display:inline-block;font:500 11px/1 var(--f-mono);text-transform:uppercase;letter-spacing:.05em;padding:4px 6px;border-radius:2px;background:var(--sunk);color:var(--muted)}
+.tag.acc{background:var(--accent-soft);color:var(--accent)}
+.count{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:12px 18px;align-items:baseline}
+.count .n{font:700 22px/1 var(--f-display);font-stretch:85%;font-variant-numeric:tabular-nums;text-align:right}
+.count .n small{font:12px var(--f-mono);color:var(--muted);margin-left:3px}
+.count .m{font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+/* timer */
+.clock{font:600 clamp(64px,16vw,128px)/1 var(--f-mono);font-variant-numeric:tabular-nums;letter-spacing:-.03em;text-align:center;padding:12px 0}
+.ring{height:4px;background:var(--sunk)}
+.ring i{display:block;height:100%;background:var(--accent);transition:width .5s linear}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.seg button{all:unset;cursor:pointer;padding:7px 12px;font:500 13px var(--f-mono);border-left:1px solid var(--line)}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+/* syllabus */
+.topic{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:10px 18px}
+.pyq{all:unset;cursor:pointer;font:500 11px/1 var(--f-mono);padding:6px 8px;border-radius:2px;color:var(--muted);border:1px dashed var(--line);white-space:nowrap}
+.pyq.has{color:var(--ink);border-style:solid}
+.pyq:focus-visible{outline:2px solid var(--accent)}
+.pyqbox{display:flex;flex-direction:column;gap:8px;font-size:14px}
+.pyqbox .row a{font-weight:600}
+.st{all:unset;cursor:pointer;font:500 11px/1 var(--f-mono);text-transform:uppercase;letter-spacing:.05em;padding:6px 8px;border-radius:2px;border:1px solid var(--line);min-width:72px;text-align:center}
+.st:focus-visible{outline:2px solid var(--accent)}
+.st[data-s="1"]{border-color:var(--warn);color:var(--warn)}
+.st[data-s="2"]{border-color:var(--accent);color:var(--accent)}
+.st[data-s="3"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.track{all:unset;cursor:pointer;display:grid;grid-template-columns:1fr 120px 52px;gap:14px;align-items:center;padding:14px 18px}
+.track:hover{background:var(--sunk)}
+.track:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.track b{font-weight:600}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{all:unset;cursor:pointer;padding:7px 11px;border:1px solid var(--line);border-radius:var(--r);font-size:13px;font-weight:500;background:var(--surface);display:inline-flex;gap:8px;align-items:baseline}
+.chips button .mono{font-size:11px;color:var(--muted)}
+.chips button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chips button[aria-selected="true"] .mono{color:inherit;opacity:.7}
+.chips button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.srcline{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);border-left:2px solid var(--line);padding-left:12px}
+.srcline b{color:var(--ink);font-weight:600}
+a{color:var(--accent);text-underline-offset:2px}
+.res{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:12px 18px;align-items:baseline}
+.res a{font-weight:600;text-decoration:none;color:var(--ink)}
+.res a:hover{color:var(--accent);text-decoration:underline}
+.res .d{grid-column:1/-1;font-size:13px;color:var(--muted)}
+.stage-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.stage-h h3{font:800 20px/1.1 var(--f-display);font-stretch:85%;text-transform:uppercase;margin:0}
+.stage-h .mono{font-size:12px;color:var(--muted)}
+.step{display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:start;padding:14px 18px}
+.step .num{color:var(--muted);font-size:13px;padding-top:2px}
+.step .w{font-weight:600}
+.step .d{font-size:13px;color:var(--muted);max-width:62ch}
+.step.done .w{text-decoration:line-through;text-decoration-color:var(--muted)}
+.step.done .num{color:var(--accent)}
+.step.next{box-shadow:inset 3px 0 0 var(--accent)}
+.ch{display:inline-flex;align-items:center;gap:4px;font:12px var(--f-mono);color:var(--muted)}
+.ch input{width:52px!important;padding:3px 6px!important;font:12px var(--f-mono)}
+.guide ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.guide h2{margin-bottom:8px}
+.gtip{margin:16px 0 0;font-size:14px;padding-top:12px;border-top:1px solid var(--line)}
+.rank{display:flex;gap:14px;align-items:center}
+.rk{font:800 22px/1.1 var(--f-display);font-stretch:85%;text-transform:uppercase;margin-top:6px}
+.obj{font:700 18px/1.2 var(--f-display);font-stretch:90%;margin:10px 0 4px;text-transform:uppercase}
+.ms{display:flex;flex-direction:column;gap:6px}
+.ms div{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:center;font-size:14px}
+.ms i{width:12px;height:12px;border:1.5px solid var(--muted);border-radius:2px}
+.ms .ok i{background:var(--accent);border-color:var(--accent)}
+.ms .ok span:nth-child(2){color:var(--muted);text-decoration:line-through}
+.ms .mono{font-size:12px;color:var(--muted)}
+.banner{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:12px 16px;border:1px solid var(--accent);background:var(--accent-soft);border-radius:var(--r)}
+.banner p{margin:0;flex:1 1 220px;font-size:14px}
+.deb{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:12px}
+.deb b{display:block;font:700 22px/1.1 var(--f-display);font-stretch:85%;font-variant-numeric:tabular-nums}
+.deb span{font:11px var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.overlay{position:fixed;inset:0;z-index:60;background:var(--bg);overflow:auto;padding:calc(20px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.ov-in{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px;min-height:100%}
+.buscard{flex:1;min-height:46vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:16px;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:24px;cursor:pointer}
+.buscard .bf{font:700 clamp(24px,6vw,34px)/1.2 var(--f-display);font-stretch:90%;text-wrap:balance}
+.buscard .bb{font-size:19px;max-width:40ch}
+.busbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.busbtns .btn{padding:18px;font-size:17px}
+.bossend{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;min-height:60vh}
+.bossend .big{font:800 72px/1 var(--f-display);font-stretch:80%;color:var(--accent)}
+.qmap{display:flex;flex-direction:column;gap:0;position:relative}
+.zone{display:flex;gap:14px;padding-bottom:22px;position:relative}
+.zone:not(:last-child)::before{content:"";position:absolute;left:15px;top:32px;bottom:0;width:2px;background:var(--line)}
+.zone .node{width:32px;height:32px;flex:none;border-radius:50%;border:2px solid var(--accent);display:grid;place-items:center;font:600 13px var(--f-mono);background:var(--surface);color:var(--accent);position:relative;z-index:1}
+.zone.clear .node{background:var(--accent);color:var(--accent-ink)}
+.zone.locked{opacity:.5}.zone.locked .node{border-color:var(--line);color:var(--muted)}
+.zt{font:700 17px/1.2 var(--f-display);font-stretch:90%;text-transform:uppercase}
+.qm{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;font-size:14px;cursor:pointer}
+.qm input{margin-top:3px;accent-color:var(--accent)}
+.ctfdata{font:600 clamp(18px,4.5vw,26px)/1.4 var(--f-mono);padding:16px;background:var(--sunk);border-radius:var(--r);word-break:break-all}
+@keyframes flash{0%{color:var(--accent);transform:scale(1.06)}100%{color:var(--ink);transform:scale(1)}}
+.flash{animation:flash 1.2s ease-out}
+@media (max-width:760px){.deb{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.units{margin-top:10px;font-size:13.5px}
+.units summary{cursor:pointer;font:500 12px var(--f-mono);text-transform:uppercase;letter-spacing:.04em;color:var(--accent)}
+.units ol{margin:8px 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:4px;counter-reset:u}
+.units li{counter-increment:u}
+.units label{display:grid;grid-template-columns:16px 26px 1fr;gap:6px;align-items:start;cursor:pointer}
+.units label::after{content:none}
+.units label input{margin-top:3px;accent-color:var(--accent)}
+.units label span::before{content:counter(u,decimal-leading-zero);font:11px var(--f-mono);color:var(--muted);margin-right:8px}
+.units label{grid-template-columns:16px 1fr}
+.units input:checked+span{color:var(--muted);text-decoration:line-through}
+.fs-sec h3{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:14px 0 8px}
+.fs-t{display:grid;grid-template-columns:10px 1fr auto;gap:12px;align-items:center;padding:9px 16px;font-size:14px}
+.fs-t .lk{display:flex;gap:12px;font-size:12.5px;white-space:nowrap}
+.st-dot{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line)}
+.st-dot[data-s="1"]{border-color:var(--warn)}.st-dot[data-s="2"]{border-color:var(--accent)}.st-dot[data-s="3"]{background:var(--accent);border-color:var(--accent)}
+@media (max-width:760px){.fs-t{grid-template-columns:10px 1fr}.fs-t .lk{grid-column:2}}
+/* practice */
+.q{font-size:18px;font-weight:500;line-height:1.45}
+.opts{display:grid;gap:8px}
+.opt{all:unset;cursor:pointer;border:1px solid var(--line);border-radius:var(--r);padding:11px 14px;display:flex;gap:12px;align-items:baseline;background:var(--surface)}
+.opt:hover{border-color:var(--muted)}
+.opt:focus-visible{outline:2px solid var(--accent)}
+.opt kbd{font:500 12px var(--f-mono);color:var(--muted)}
+.opt.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 12%,var(--surface))}
+.opt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--surface))}
+.drillq{font:600 clamp(40px,9vw,64px)/1.1 var(--f-mono);text-align:center;padding:18px 0 8px;font-variant-numeric:tabular-nums}
+.big-in{font:600 28px var(--f-mono)!important;text-align:center;padding:12px!important}
+.card{min-height:200px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:10px;padding:28px 20px;cursor:pointer}
+.card .front{font:700 26px/1.2 var(--f-display);font-stretch:90%;text-wrap:balance}
+.card .back{font-size:17px;color:var(--ink);max-width:46ch}
+.boxes{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.boxes div{border:1px solid var(--line);padding:8px;text-align:center;font:12px var(--f-mono);color:var(--muted)}
+.boxes b{display:block;font:700 18px var(--f-display);color:var(--ink)}
+/* heatmap */
+.heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,12px);gap:3px;overflow-x:auto;padding-bottom:4px}
+.heat i{width:12px;height:12px;border-radius:1px;background:var(--h0)}
+.heat i[data-l="1"]{background:var(--h1)}.heat i[data-l="2"]{background:var(--h2)}.heat i[data-l="3"]{background:var(--h3)}.heat i[data-l="4"]{background:var(--h4)}
+.legend{display:flex;gap:3px;align-items:center;font:11px var(--f-mono);color:var(--muted)}
+.legend i{width:10px;height:10px;display:inline-block}
+.hbar{display:grid;grid-template-columns:130px 1fr 64px;gap:12px;align-items:center;padding:7px 0;font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+th{font:500 11px var(--f-mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-top:0}
+td.num,th.num{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto}
+.note{display:grid;grid-template-columns:1fr auto;gap:6px;padding:12px 18px;cursor:pointer}
+.note:hover{background:var(--sunk)}
+.note .x{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;grid-column:1/-1}
+.empty{color:var(--muted);font-size:14px;padding:18px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:var(--r);font-size:14px;z-index:50;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+.plan p{margin:0 0 10px;max-width:68ch}
+.plan ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;max-width:70ch}
+.dots{display:flex;gap:4px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--sunk)}
+.dots i.on{background:var(--accent)}
+.mob{display:none}
+@media (max-width:760px){
+  .app{grid-template-columns:1fr}
+  .rail{display:none}
+  .mob{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);border-top:1px solid var(--line);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+  .mob button{all:unset;flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;font:500 10.5px var(--f-mono);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);cursor:pointer}
+  .mob button svg{width:20px;height:20px}
+  .mob button[aria-current="page"]{color:var(--accent)}
+  .mob button:focus-visible{outline:2px solid var(--accent)}
+  main{padding-block:20px 110px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi:nth-child(3){border-left:0}
+  .kpi:nth-child(n+3){border-top:1px solid var(--line)}
+  .slot{grid-template-columns:70px 1fr;padding:12px 14px}
+  .slot .btn{grid-column:2;justify-self:start}
+  .track{grid-template-columns:1fr 70px 44px}
+  .hbar{grid-template-columns:96px 1fr 56px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app">
+  <aside class="rail">
+    <div class="brand">Study Desk<small>B.Tech CSE · Cyber · Yr 3</small></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sync" id="sync">Saved on this device</div>
+  </aside>
+  <main><div class="wrap">
+
+  <!-- TODAY -->
+  <section class="view" id="v-today">
+    <div class="head">
+      <div><h1 id="hello">Today</h1><p class="sub" id="todaySub"></p></div>
+      <div class="row"><button class="btn primary" id="quickStart">Start focus</button><button class="btn" id="busBtn">Bus mode</button><button class="btn" data-v="set">Settings</button></div>
+    </div>
+    <div id="banner" style="display:flex;flex-direction:column;gap:10px"></div>
+    <div class="grid2"><div class="panel pad" id="rankCard"></div><div class="panel pad" id="missionCard"></div></div>
+    <div class="kpis">
+      <div class="kpi"><b id="kToday">0m</b><span id="kTodayL">of 120m today</span></div>
+      <div class="kpi"><b id="kStreak">0</b><span>day streak</span></div>
+      <div class="kpi"><b id="kWeek">0h</b><span>this week</span></div>
+      <div class="kpi"><b id="kDue">0</b><span>cards due</span></div>
+    </div>
+    <div>
+      <h2>Your day</h2>
+      <div class="panel list" id="slots"></div>
+    </div>
+    <div class="grid2">
+      <div>
+        <h2>Countdown</h2>
+        <div class="panel list" id="counts"></div>
+      </div>
+      <div>
+        <h2>The plan</h2>
+        <div class="panel pad plan">
+          <p><b>One engine, many exits.</b> Quant, Reasoning, English and GK are shared by SSC CGL, IBPS PO, AFCAT, CDS and UPSC CSAT. Build that core daily and every exam gets cheaper.</p>
+          <ol>
+            <li><b>Now to 7th sem:</b> placements first (DSA + cyber skills + projects), core aptitude 1 block a day.</li>
+            <li><b>Final year:</b> AFCAT and CDS (final-year students can apply), SSB prep, keep placements on.</li>
+            <li><b>After graduation:</b> SSC CGL and IBPS PO. UPSC only as a full-time 1 to 2 year decision.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOCUS -->
+  <section class="view" id="v-focus" hidden>
+    <div class="head"><div><h1>Focus</h1><p class="sub">Every minute here is logged to your stats.</p></div></div>
+    <div class="panel">
+      <div class="ring"><i id="ring" style="width:0"></i></div>
+      <div class="pad" style="display:flex;flex-direction:column;gap:16px">
+        <div class="spread">
+          <div class="seg" id="modeSeg">
+            <button data-m="25" aria-pressed="false">25</button>
+            <button data-m="50" aria-pressed="true">50</button>
+            <button data-m="90" aria-pressed="false">90</button>
+            <button data-m="0" aria-pressed="false">Open</button>
+          </div>
+          <span class="tag" id="timerState">Ready</span>
+        </div>
+        <div class="clock" id="clock">50:00</div>
+        <div class="grid2">
+          <label class="f">Subject<select id="tSubject"></select></label>
+          <label class="f">Where<select id="tPlace"><option>Home</option><option>Bus</option><option>College</option><option>Library</option></select></label>
+        </div>
+        <label class="f">Working on<input type="text" id="tNote" placeholder="e.g. Time & Work, 30 questions"></label>
+        <div class="row">
+          <button class="btn primary" id="tStart">Start</button>
+          <button class="btn" id="tStop" disabled>Finish and log</button>
+          <button class="btn ghost" id="tCancel" disabled>Discard</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h2>Log manually</h2>
+      <div class="panel pad">
+        <div class="row" style="align-items:flex-end">
+          <label class="f" style="flex:2 1 160px">Subject<select id="mSubject"></select></label>
+          <label class="f" style="flex:1 1 90px">Minutes<input type="number" id="mMin" min="1" max="600" value="30"></label>
+          <label class="f" style="flex:1 1 140px">Date<input type="date" id="mDate"></label>
+          <button class="btn" id="mAdd">Add</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h2>Recent sessions</h2>
+      <div class="panel scroll"><table id="sessTable"></table></div>
+    </div>
+  </section>
+
+  <!-- SYLLABUS -->
+  <section class="view" id="v-syl" hidden>
+    <div class="tabs" role="tablist" id="sylMode">
+      <button role="tab" data-m="road" aria-selected="true">Roadmap</button>
+      <button role="tab" data-m="topics" aria-selected="false">Exam guides</button>
+      <button role="tab" data-m="full" aria-selected="false">Full syllabus</button>
+    </div>
+    <div class="view" id="roadView">
+      <div class="head"><div><h1>Roadmap</h1><p class="sub">Zero to exam-ready, in order. Finish a step, mark it Done, move to the next. Add chapter counts to track each book.</p></div></div>
+      <div class="panel pad" id="roadHead"></div>
+      <div id="roadList" style="display:flex;flex-direction:column;gap:28px"></div>
+    </div>
+    <div class="view" id="fullView" hidden>
+      <div class="head"><div><h1>Full syllabus</h1><p class="sub">Every topic of every exam on one page. Each topic has links to learn it and to find past questions on any free site.</p></div></div>
+      <div class="row"><input type="text" id="fsQ" placeholder="Search a topic, e.g. percentage, deadlock, polity" style="flex:1 1 220px"></div>
+      <div class="chips" id="fsEx"></div>
+      <div id="fsList" style="display:flex;flex-direction:column;gap:22px"></div>
+    </div>
+    <div class="view" id="topicView" hidden>
+    <div class="head"><div><h1 id="sylTitle">Syllabus</h1><p class="sub" id="sylSub"></p></div>
+      <button class="btn" id="sylBack" hidden>All sections</button></div>
+    <div class="chips" id="sylExams" role="tablist"></div>
+    <div class="srcline" id="sylSrc"></div>
+    <div class="panel pad" id="sylGuide"></div>
+    <div class="panel pad pyqbox" id="sylPyq" hidden></div>
+    <div class="panel list" id="sylList"></div>
+    <div class="panel pad" id="sylAdd" hidden>
+      <div class="row"><input type="text" id="newTopic" placeholder="Add a topic to this track" style="flex:1 1 200px"><button class="btn" id="addTopic">Add topic</button></div>
+    </div>
+    </div>
+  </section>
+
+  <!-- PRACTICE -->
+  <section class="view" id="v-prac" hidden>
+    <div class="head"><div><h1>Practice</h1><p class="sub">Drills for speed, questions for accuracy, cards for memory.</p></div></div>
+    <div class="tabs" role="tablist" id="pTabs">
+      <button role="tab" data-p="drill" aria-selected="true">Speed drills</button>
+      <button role="tab" data-p="mcq" aria-selected="false">Questions</button>
+      <button role="tab" data-p="cards" aria-selected="false">Flashcards</button>
+      <button role="tab" data-p="notes" aria-selected="false">Notes</button>
+      <button role="tab" data-p="quest" aria-selected="false">Cyber quest</button>
+      <button role="tab" data-p="ctf" aria-selected="false">Daily flag</button>
+    </div>
+
+    <div id="p-drill" class="view">
+      <div class="panel pad" style="display:flex;flex-direction:column;gap:14px">
+        <div class="spread">
+          <select id="dType" style="width:auto"></select>
+          <span class="mono" id="dTime">60s</span>
+        </div>
+        <div class="drillq" id="dQ">Ready</div>
+        <input type="text" inputmode="decimal" autocomplete="off" class="big-in" id="dIn" placeholder="Answer, then Enter" disabled>
+        <div class="spread"><span class="mono" id="dScore">Best: 0</span><button class="btn primary" id="dGo">Start 60s round</button></div>
+      </div>
+      <p class="sub" style="margin:0">Good for the bus. Squares to 30, cubes to 15 and fraction percentages save real time in SSC and IBPS quant.</p>
+    </div>
+
+    <div id="p-mcq" class="view" hidden>
+      <div class="panel pad" style="display:flex;flex-direction:column;gap:10px">
+        <h2 style="margin:0">Import an official paper</h2>
+        <p class="sub" style="margin:0">Download a question paper PDF from the official site (UPSC past papers, SSC answer keys, GATE, AFCAT). Import it here and every question goes into your practice set, sorted by section. Only real questions from your file are used.</p>
+        <div class="grid3"><label class="f">Exam<select id="ppExam"></select></label><label class="f">Name<input type="text" id="ppName" placeholder="CDS I 2024 English"></label><label class="f">PDF file<input type="file" id="ppFile" accept="application/pdf,.pdf"></label></div>
+        <div class="row"><button class="btn primary" id="ppGo">Import paper</button><button class="btn" id="ppStop" hidden>Stop</button><span class="sub" style="margin:0" id="ppStatus"></span></div>
+        <div class="panel list" id="ppList"></div>
+      </div>
+      <div class="row">
+        <select id="qSec" style="width:auto"></select>
+        <span class="tag" id="qProg"></span>
+        <span class="tag acc" id="qAcc"></span>
+      </div>
+      <div class="panel pad" style="display:flex;flex-direction:column;gap:16px">
+        <div class="q" id="qText"></div>
+        <div class="opts" id="qOpts"></div>
+        <div class="spread"><span class="sub" id="qExp" style="margin:0"></span><button class="btn primary" id="qNext">Next</button></div>
+      </div>
+      <div>
+        <h2>Save a real past-paper question</h2>
+        <div class="panel pad" style="display:flex;flex-direction:column;gap:10px">
+          <p class="sub" style="margin:0">Copy a question you solved or got wrong from an official paper. It joins your practice pool and comes back until you get it right.</p>
+          <div class="grid3"><label class="f">Exam<select id="mqE"></select></label><label class="f">Year<input type="text" id="mqY" placeholder="2024 Tier 1"></label><label class="f">Topic<input type="text" id="mqT" placeholder="Time and work"></label></div>
+          <label class="f">Question<textarea id="mqQ" style="min-height:70px"></textarea></label>
+          <div class="grid2"><label class="f">Option A<input type="text" id="mqO0"></label><label class="f">Option B<input type="text" id="mqO1"></label><label class="f">Option C<input type="text" id="mqO2"></label><label class="f">Option D<input type="text" id="mqO3"></label></div>
+          <div class="grid2"><label class="f">Correct option<select id="mqA"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select></label><label class="f">Why (your note)<input type="text" id="mqX" placeholder="Short method"></label></div>
+          <div><button class="btn" id="mqAdd">Save question</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="p-cards" class="view" hidden>
+      <div class="boxes" id="boxes"></div>
+      <div class="panel card" id="card" tabindex="0" role="button" aria-label="Flip card">
+        <span class="tag" id="cardDeck"></span>
+        <div class="front" id="cardFront"></div>
+        <div class="back" id="cardBack" hidden></div>
+      </div>
+      <div class="row" id="cardBtns">
+        <button class="btn" id="cAgain" disabled>Again</button>
+        <button class="btn primary" id="cGood" disabled>Got it</button>
+        <span class="sub" style="margin:0" id="cardInfo"></span>
+      </div>
+      <div>
+        <h2>Add a card</h2>
+        <div class="panel pad" style="display:flex;flex-direction:column;gap:10px">
+          <div class="grid3">
+            <label class="f">Front<input type="text" id="cfF" placeholder="Laconic"></label>
+            <label class="f">Back<input type="text" id="cfB" placeholder="Using very few words"></label>
+            <label class="f">Deck<select id="cfD"></select></label>
+          </div>
+          <div><button class="btn" id="cfAdd">Add card</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="p-quest" class="view" hidden>
+      <p class="sub" style="margin:0">Six zones from Recon to Defend, all on free platforms. Finish 60% of a zone to unlock the next.</p>
+      <div id="questMap" class="qmap"></div>
+    </div>
+    <div id="p-ctf" class="view" hidden>
+      <div class="panel pad" id="ctfBox"></div>
+      <p class="sub" style="margin:0">One small puzzle a day: encodings, ciphers and ports, the warm-ups of every CTF.</p>
+    </div>
+    <div id="p-notes" class="view" hidden>
+      <div class="grid2" style="grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)">
+        <div class="panel list" id="noteList"></div>
+        <div class="panel pad" style="display:flex;flex-direction:column;gap:10px">
+          <input type="text" id="nTitle" placeholder="Title">
+          <select id="nSub"></select>
+          <textarea id="nBody" placeholder="Formulas, tricks, mistakes to avoid"></textarea>
+          <div class="row"><button class="btn primary" id="nSave">Save note</button><button class="btn" id="nNew">New</button><button class="btn" id="nRead">Read aloud</button><button class="btn ghost" id="nDel" hidden>Delete</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="view" id="v-prog" hidden>
+    <div class="head"><div><h1>Progress</h1><p class="sub">Hours, consistency and mock scores in one place.</p></div></div>
+    <div class="panel pad" id="debrief"></div>
+    <div class="kpis">
+      <div class="kpi"><b id="sTotal">0h</b><span>total logged</span></div>
+      <div class="kpi"><b id="sAvg">0m</b><span>daily avg, 30d</span></div>
+      <div class="kpi"><b id="sBest">0</b><span>best streak</span></div>
+      <div class="kpi"><b id="sQacc">–</b><span>question accuracy</span></div>
+    </div>
+    <div class="panel pad">
+      <div class="spread" style="margin-bottom:12px"><h2 style="margin:0">Last 20 weeks</h2>
+        <div class="legend">less <i style="background:var(--h0)"></i><i style="background:var(--h1)"></i><i style="background:var(--h2)"></i><i style="background:var(--h3)"></i><i style="background:var(--h4)"></i> more</div></div>
+      <div class="heat" id="heat"></div>
+    </div>
+    <div class="grid2">
+      <div class="panel pad"><h2>Time by subject, 30 days</h2><div id="bySub"></div></div>
+      <div class="panel pad"><h2>Syllabus covered</h2><div id="bySyl"></div></div>
+    </div>
+    <div class="panel pad"><h2>Weak-spot radar</h2><div id="radar"></div></div>
+    <div>
+      <h2>Mock tests</h2>
+      <div class="panel pad" style="display:flex;flex-direction:column;gap:14px">
+        <div id="mockChart"></div>
+        <div class="row" style="align-items:flex-end">
+          <label class="f" style="flex:2 1 150px">Exam<select id="mkExam"></select></label>
+          <label class="f" style="flex:1 1 80px">Score<input type="number" id="mkScore" step="0.25"></label>
+          <label class="f" style="flex:1 1 80px">Out of<input type="number" id="mkMax" value="200"></label>
+          <label class="f" style="flex:1 1 130px">Date<input type="date" id="mkDate"></label>
+          <button class="btn" id="mkAdd">Log mock</button>
+        </div>
+      </div>
+      <div class="panel scroll" style="margin-top:12px"><table id="mockTable"></table></div>
+    </div>
+  </section>
+
+  <!-- LIBRARY -->
+  <section class="view" id="v-lib" hidden>
+    <div class="head"><div><h1>Library</h1><p class="sub">Free, legal resources only. Official sites first, the rest picked from FMHY's education and cybersecurity lists.</p></div></div>
+    <div class="chips" id="libCats" role="tablist"></div>
+    <div class="panel list" id="libList"></div>
+    <p class="sub" style="margin:0">I left out FMHY links that host pirated coaching videos or paid books. They can disappear or carry malware, and you don't need them for these exams.</p>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="view" id="v-set" hidden>
+    <div class="head"><div><h1>Settings</h1><p class="sub">Targets, exam dates and your data.</p></div></div>
+    <div class="panel pad" style="display:flex;flex-direction:column;gap:14px">
+      <div class="grid3">
+        <label class="f">Your name<input type="text" id="setName"></label>
+        <label class="f">Daily target (min)<input type="number" id="setTarget" min="15" max="720"></label>
+        <label class="f">Leave for college<input type="text" id="setLeave" placeholder="7:30"></label>
+      </div>
+      <label class="f">Why I'm doing this (shown on days you miss)<textarea id="setWhy" style="min-height:80px" placeholder="I want to wear the Air Force uniform and make my parents proud. Every hour now is a step toward the SSB."></textarea></label>
+    </div>
+    <div>
+      <h2>Exam dates</h2>
+      <p class="sub" style="margin:-6px 0 12px">Starting dates are estimates from past cycles. Replace them when the official notification comes out.</p>
+      <div class="panel list" id="examEdit"></div>
+      <div class="row" style="margin-top:10px"><button class="btn" id="exAdd">Add exam</button></div>
+    </div>
+    <div>
+      <h2>Your data</h2>
+      <div class="panel pad" style="display:flex;flex-direction:column;gap:10px">
+        <p class="sub" style="margin:0" id="dataWhere"></p>
+        <div class="row"><button class="btn" id="exportBtn">Copy backup</button><button class="btn" id="importBtn">Restore from backup</button><button class="btn" id="themeBtn">Theme: auto</button></div>
+        <textarea id="backup" placeholder="Backup text appears here. To restore, paste a backup and press Restore." style="min-height:90px;font:12px var(--f-mono)"></textarea>
+      </div>
+    </div>
+  </section>
+
+  </div></main>
+  <nav class="mob" id="mob"></nav>
+</div>
+<div class="overlay" id="ov" hidden><div class="ov-in" id="ovIn"></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad2=n=>String(n).padStart(2,'0');
+const dkey=(d=new Date())=>d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());
+const parseKey=k=>{const [y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)};
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const fmtMin=m=>m>=60?Math.floor(m/60)+'h'+(m%60?' '+(m%60)+'m':''):Math.round(m)+'m';
+const uid=()=>Math.random().toString(36).slice(2,10);
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+const SUBJECTS=['Quant','Reasoning','English','GK & Current Affairs','Cyber & Placement','Defence & SSB','UPSC'];
+const ICON={
+ today:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="15" rx="1"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+ focus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>',
+ syl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.3 1.3L7 5M3.5 12l1.3 1.3L7 11"/><circle cx="5" cy="18" r="1.3"/></svg>',
+ prac:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20l5-5M14.5 4.5l5 5-8 8-5-5z"/><path d="M12 7l5 5"/></svg>',
+ prog:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>',
+ lib:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h4v16H4zM10 4h4v16h-4zM16.5 4.6l3.8 1-3.9 14.8-3.8-1"/></svg>',
+ set:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg>'
+};
+const VIEWS=[['today','Today'],['focus','Focus'],['syl','Syllabus'],['prac','Practice'],['lib','Library'],['prog','Progress'],['set','Settings']];
+
+/* ---------- seed data ---------- */
+/* Official syllabi, as printed in each exam's notification. IBPS does not publish a chapter list, so its topics come from its official section pattern plus recent papers. */
+const EXAM_SYL={
+ 'SSC CGL':{src:'SSC CGL notification (Tier 1 and Tier 2 Paper 1)',url:'https://ssc.gov.in',pattern:'Tier 1: 100 questions, 200 marks, minus 0.50 per wrong answer.',sec:{
+  'Reasoning':['Analogies (semantic, number, figural)','Classification (semantic, number, figural)','Series (number, letter, figural, semantic)','Coding and decoding','Syllogism, statement and conclusion','Venn diagrams','Space visualisation and orientation','Mirror and water images','Paper folding and cutting, pattern completion','Embedded figures','Arithmetical reasoning, numerical and symbolic operations','Word building','Indexing, address and date matching','Classifying centre codes and roll numbers','Critical thinking, emotional and social intelligence (Tier 2)'],
+  'General Awareness':['History and culture','Geography and the economic scene','General policy and scientific research','General science','Current affairs','Books and authors','Sports','Important schemes and important days','Portfolios and people in news','India and its neighbouring countries'],
+  'Quantitative Aptitude':['Whole numbers, decimals, fractions, relationships between numbers','Square roots','Averages','Percentages','Ratio and proportion','Simple and compound interest','Profit and loss, discount','Partnership','Mixture and alligation','Time and distance','Time and work','Algebraic identities, elementary surds','Graphs of linear equations','Triangles: centres, congruence, similarity','Circles: chords, tangents, common tangents','Regular polygons','Mensuration: 2D figures','Mensuration: prisms, cones, cylinders, spheres, hemispheres, cuboids, pyramids','Trigonometry: ratios, complementary angles, identities','Heights and distances','Statistics: histograms, frequency polygons, bar and pie charts','Mean, median, mode, standard deviation (Tier 2)','Simple probability (Tier 2)'],
+  'English':['Synonyms and antonyms','One-word substitution','Idioms and phrases','Spotting errors','Sentence improvement','Fill in the blanks','Spelling correction','Active and passive voice','Direct and indirect narration (Tier 2)','Sentence rearrangement (para jumbles)','Cloze test','Reading comprehension'],
+  'Computer Proficiency (Tier 2)':['Computer organisation: CPU, memory, input and output devices, ports','Windows Explorer and keyboard shortcuts','MS Word, Excel, PowerPoint basics','Internet: browsing, searching, upload and download','Email and e-banking','Networking devices and protocols','Cyber security: hacking, viruses, worms, Trojans, prevention']}},
+ 'IBPS PO':{src:'IBPS PO section pattern; IBPS publishes no chapter list, topics from recent papers',url:'https://www.ibps.in',pattern:'Prelims: 100 questions, 100 marks, 60 min (3 sections, 20 min each). Mains objective: 200 marks + 25-mark descriptive.',sec:{
+  'Reasoning':['Seating arrangement: linear, circular, square','Puzzles: floor, box, month, day, scheduling','Syllogism','Inequality','Coding-decoding','Blood relations','Direction and distance','Order and ranking','Alphanumeric series, alphabet test','Input-output','Data sufficiency','Critical reasoning: assumption, inference, argument (Mains)'],
+  'Quantitative Aptitude':['Simplification and approximation','Number series','Quadratic equations','Number system, HCF and LCM','Ratio, percentage, averages, ages','Profit and loss, SI and CI','Partnership, mixture and alligation','Time and work, pipes and cisterns','Speed, distance, trains, boats and streams','Mensuration','Probability, permutation and combination','Data interpretation: table, bar, line, pie, caselet','Quantity comparison','Data sufficiency'],
+  'English':['Reading comprehension','Cloze test','Error detection','Sentence improvement, phrase replacement','Fill in the blanks','Para jumbles, sentence rearrangement','Word swap','Vocabulary, idioms','Sentence connectors, odd sentence out'],
+  'Awareness (Mains)':['Current affairs: national, international, banking','RBI functions, monetary policy, circulars','Banking terms: NPA, CASA, CRAR, NIM','Payment systems: NEFT, RTGS, IMPS, UPI, NPCI','Digital banking, fintech, financial inclusion','Indian economy, Union Budget, Economic Survey','Money and capital markets, insurance, pensions','International institutions'],
+  'Descriptive (Mains)':['Essay writing','Reading comprehension: summary and inference']}},
+ 'AFCAT':{src:'AFCAT notification (afcat.cdac.in)',url:'https://afcat.cdac.in',pattern:'AFCAT: 100 questions, 300 marks, 2 h, +3 / minus 1. EKT: 50 questions, 150 marks, 45 min.',sec:{
+  'General Awareness':['History','Geography','Civics and politics','National and international organisations','Current affairs','Environment','Basic science','Defence','Art and culture','Sports'],
+  'Verbal Ability in English':['Reading comprehension','Error detection','Sentence completion','Synonyms and antonyms','Cloze test','Idioms and phrases','Analogy','Sentence rearrangement','Complex to simple sentences','One-word substitution','Homonyms'],
+  'Numerical Ability':['Decimal fractions','Time and work','Average','Percentage','Profit and loss','Ratio and proportion','Simple and compound interest','Time, speed and distance (trains, boats, streams)','Area and perimeter','Probability','Number system and number series','Mixture and alligation','Clock'],
+  'Reasoning & Military Aptitude':['Verbal skills','Spatial ability'],
+  'EKT: Computer Science':['Engineering physics','Engineering mathematics','Engineering drawing','Information technology','Network theory and design','Analog and digital electronics','Computer networks','Switching theory','Electronic devices','Electrical engineering basics','Control engineering','Telecommunication systems','Microwave engineering','Antenna and wave propagation','Radar theory','Instrumentation']}},
+ 'CDS':{src:'UPSC CDS notification (upsc.gov.in)',url:'https://upsc.gov.in',pattern:'IMA, INA, AFA: English, GK, Maths, 100 marks each. OTA: English and GK only. 2 h per paper, minus 1/3 per wrong answer.',sec:{
+  'Elementary Mathematics':['Arithmetic: number system, HCF and LCM','Arithmetic: percentage, interest, profit and loss','Arithmetic: ratio and proportion, time and work, time and distance','Number theory','Algebra: polynomials, remainder theorem','Algebra: linear equations in two variables, quadratic equations','Algebra: sets, indices, rational expressions','Trigonometry: ratios, standard angles, identities','Trigonometry: heights and distances','Geometry: lines, angles, triangles, congruence and similarity','Geometry: circles, parallelograms','Mensuration: areas and volumes of plane figures and solids','Statistics: tabulation, bar and pie charts, histograms, frequency polygons','Statistics: measures of central tendency'],
+  'English':['Spotting errors','Sentence improvement and substitution','Basic grammar','Reading comprehension','Vocabulary: synonyms, antonyms','Sentence and word order','Fill in the blanks','Idioms and phrases'],
+  'General Knowledge':['Current affairs and defence news','Indian polity: Constitution, judiciary','Economics','Indian and world history','Geography','Physics','Chemistry','Biology','Sociology']}},
+ 'UPSC CSE Prelims':{src:'UPSC Civil Services notification',url:'https://upsc.gov.in',pattern:'Two papers, 200 marks each, 2 h each. Paper II (CSAT) is qualifying at 33%.',sec:{
+  'GS Paper I':['Current events of national and international importance','History of India and Indian National Movement','Indian and world geography: physical, social, economic','Indian polity and governance: Constitution, political system, Panchayati Raj, public policy, rights issues','Economic and social development: sustainable development, poverty, inclusion, demographics, social sector','Environmental ecology, biodiversity and climate change','General science'],
+  'Paper II (CSAT)':['Comprehension','Interpersonal and communication skills','Logical reasoning and analytical ability','Decision-making and problem-solving','General mental ability','Basic numeracy (Class X level)','Data interpretation: charts, graphs, tables, sufficiency (Class X level)']}},
+ 'GATE CS':{src:'GATE 2027 CS syllabus, IIT Madras (organising institute)',url:'https://gate2027.iitm.ac.in',pattern:'65 questions, 100 marks, 3 h. General Aptitude 15 marks. Wrong MCQ costs 1/3 (1-mark) or 2/3 (2-mark). No negative marks on MSQ and NAT. Score valid 3 years for PSU jobs and M.Tech.',sec:{
+  'General Aptitude':['Verbal: grammar, vocabulary, reading comprehension, narrative sequencing','Quantitative: data interpretation, numerical computation and estimation','Quantitative: mensuration, geometry, elementary statistics and probability','Analytical: deduction, induction, analogy, numerical relations','Spatial: 2D and 3D transformations, paper folding, cutting and patterns'],
+  'Engineering Mathematics':['Discrete maths: propositional and first-order logic','Sets, relations, functions, partial orders, lattices','Monoids and groups','Graphs: connectivity, matching, colouring','Combinatorics: counting, recurrence relations, generating functions','Linear algebra: matrices, determinants, linear equations','Eigenvalues, eigenvectors, LU decomposition','Calculus: limits, continuity, differentiability, maxima and minima, mean value theorem, integration','Probability: random variables, uniform, normal, exponential, Poisson, binomial','Mean, median, mode, standard deviation','Conditional probability and Bayes theorem'],
+  'Digital Logic':['Boolean algebra','Combinational and sequential circuits','Minimisation: K-maps and tabular method','Number representations and computer arithmetic (fixed and floating point)'],
+  'Computer Organization & Architecture':['Machine instructions and addressing modes','ALU, data path and control unit','Instruction pipelining, pipeline hazards','Memory hierarchy: cache, main memory','I/O interface: interrupt and DMA mode'],
+  'Programming & Data Structures':['Programming in C','Recursion','Arrays, stacks, queues, linked lists','Trees, binary search trees, binary heaps','Graphs'],
+  'Algorithms':['Searching, sorting, hashing','Asymptotic worst-case time and space complexity','Greedy','Dynamic programming','Divide and conquer','Graph traversals, minimum spanning trees, shortest paths'],
+  'Theory of Computation':['Regular expressions and finite automata','Context-free grammars and push-down automata','Regular and context-free languages, pumping lemma','Turing machines and undecidability'],
+  'Compiler Design':['Lexical analysis, parsing, syntax-directed translation','Runtime environments','Intermediate code generation','Local optimisation','Data flow analysis: constant propagation, liveness, common subexpression elimination'],
+  'Operating System':['System calls, processes, threads, inter-process communication','Concurrency and synchronisation','Deadlock','CPU and I/O scheduling','Memory management and virtual memory','File systems'],
+  'Databases':['ER model','Relational model: relational algebra, tuple calculus, SQL','Integrity constraints, normal forms','File organisation, indexing (B and B+ trees)','Transactions and concurrency control'],
+  'Computer Networks':['Concept of layering: OSI and TCP/IP stacks','Packet, circuit and virtual circuit switching','Data link layer: framing, error detection, MAC, Ethernet bridging','Routing: shortest path, flooding, distance vector, link state','IP addressing, IPv4, CIDR notation, fragmentation, NAT','Transport layer: flow control, congestion control, TCP, sockets','Application layer: DNS, HTTP, email']}},
+ 'Placement (my plan)':{src:'Not an exam syllabus. A standard placement prep list for a cyber security student.',url:'',pattern:'Most campus tests: online aptitude round, coding round, then technical and HR interviews.',sec:{
+  'Coding & DSA':['Arrays and strings','Linked list, stack, queue','Hashing','Recursion and backtracking','Trees and BST','Graphs: BFS, DFS, shortest path','Dynamic programming','Sorting and searching, complexity'],
+  'CS core':['Operating systems','DBMS and SQL','Computer networks','OOP concepts'],
+  'Cyber security':['OWASP Top 10','Network security and firewalls','Cryptography basics','Linux and Bash','Python scripting','Nmap, Wireshark, Burp Suite','One certification (e.g. Security+ or CEH)','CTF practice'],
+  'Career':['Resume','Two solid projects on GitHub','Mock interviews']}}
+};
+const EXAMS=[
+ {id:'e1',name:'Campus placements',date:'2027-07-15',est:true},
+ {id:'e2',name:'AFCAT 1 (2028)',date:'2028-02-19',est:true},
+ {id:'e3',name:'CDS I (2028)',date:'2028-04-09',est:true},
+ {id:'e4',name:'SSC CGL Tier 1',date:'2028-07-10',est:true},
+ {id:'e5',name:'IBPS PO Prelims',date:'2028-08-20',est:true},
+ {id:'e6',name:'UPSC CSE Prelims',date:'2029-05-27',est:true},
+ {id:'e7',name:'GATE CS 2028',date:'2028-02-05',est:true}
+];
+const QB=[
+ ['Quant','What is 15% of 240?',['36','32','40','24'],'10% is 24, 5% is 12, total 36.'],
+ ['Quant','A 120 m train runs at 54 km/h. How long does it take to pass a pole?',['8 s','6 s','10 s','12 s'],'54 km/h = 15 m/s. 120 ÷ 15 = 8 s.'],
+ ['Quant','Simple interest on ₹5,000 at 8% a year for 3 years?',['₹1,200','₹1,000','₹1,250','₹1,400'],'5000 × 8 × 3 ÷ 100 = 1200.'],
+ ['Quant','Average of the first 10 natural numbers?',['5.5','5','6','10'],'Sum 55 ÷ 10 = 5.5.'],
+ ['Quant','Two numbers are in ratio 3:5 and add up to 64. The larger is?',['40','24','38','45'],'64 ÷ 8 = 8 per part, 5 × 8 = 40.'],
+ ['Quant','A finishes a job in 12 days, B in 18. Together they take?',['7.2 days','7.5 days','6 days','15 days'],'1/12 + 1/18 = 5/36, so 36/5 = 7.2 days.'],
+ ['Quant','Cost price ₹400, selling price ₹460. Profit percent?',['15%','12%','18%','60%'],'Profit 60 on 400 = 15%.'],
+ ['Quant','LCM of 12, 18 and 30?',['180','90','360','60'],'2² × 3² × 5 = 180.'],
+ ['Quant','25² − 15² = ?',['400','100','300','500'],'(25+15)(25−15) = 40 × 10.'],
+ ['Quant','Compound interest on ₹10,000 at 10% for 2 years?',['₹2,100','₹2,000','₹2,200','₹1,100'],'10000 × 1.21 − 10000 = 2100.'],
+ ['Reasoning','Next number: 2, 6, 12, 20, 30, ?',['42','40','36','44'],'Differences 4, 6, 8, 10, so add 12.'],
+ ['Reasoning','If CAT = 24 (C3 + A1 + T20), then DOG = ?',['26','24','27','30'],'D4 + O15 + G7 = 26.'],
+ ['Reasoning','You face North, turn right, turn right again, then turn left. Which way now?',['East','West','South','North'],'N → E → S → E.'],
+ ['Reasoning','Odd one out: 121, 144, 169, 196, 210',['210','169','121','196'],'All others are perfect squares.'],
+ ['Reasoning','A is B\'s sister, C is B\'s mother, D is C\'s father. A is D\'s?',['Granddaughter','Daughter','Niece','Sister'],'D is A\'s maternal grandfather.'],
+ ['Reasoning','APPLE is coded BQQMF. How is MANGO coded?',['NBOHP','NBOGP','NAOHP','LZMFN'],'Each letter moves one step forward.'],
+ ['Reasoning','Next letter: Z, X, V, T, ?',['R','S','Q','P'],'Skip one letter each time going back.'],
+ ['Reasoning','All pens are books. Some books are bags. Conclusion: some pens are bags.',['Does not follow','Follows','Follows only if all books are bags','Cannot be a conclusion type'],'The books that are bags may not be pens.'],
+ ['English','Synonym of "candid"',['Frank','Secretive','Careful','Rude'],'Candid means open and honest.'],
+ ['English','Antonym of "obscure"',['Clear','Hidden','Vague','Dim'],'Obscure means unclear or little known.'],
+ ['English','One word for "a person who knows everything"',['Omniscient','Omnipotent','Omnipresent','Optimist'],'Omnipotent = all-powerful, omnipresent = everywhere.'],
+ ['English','Find the error: "He do not like tea."',['do → does','He → Him','like → likes','tea → the tea'],'Third person singular takes "does".'],
+ ['English','Meaning of "bite the bullet"',['Face a hard situation bravely','Get angry quickly','Eat very fast','Avoid a problem'],'Endure something unpleasant with courage.'],
+ ['English','Correct spelling',['Accommodate','Accomodate','Acommodate','Accommadate'],'Double c, double m.'],
+ ['English','Passive voice: "She writes a letter."',['A letter is written by her.','A letter was written by her.','A letter is being written by her.','A letter has been written by her.'],'Simple present stays simple present: is + V3.'],
+ ['GK & Current Affairs','Article 21 of the Constitution protects',['Life and personal liberty','Equality before law','Freedom of religion','Right to education only'],'Article 14 is equality before law.'],
+ ['GK & Current Affairs','Fundamental Duties were added by the',['42nd Amendment, 1976','44th Amendment, 1978','73rd Amendment, 1992','1st Amendment, 1951'],'Swaran Singh Committee recommended them.'],
+ ['GK & Current Affairs','Who appoints the Chief Justice of India?',['The President','The Prime Minister','Parliament','The Law Minister'],'Under Article 124.'],
+ ['GK & Current Affairs','The SI unit of electrical resistance is',['Ohm','Volt','Ampere','Watt'],'R = V / I.'],
+ ['GK & Current Affairs','The Reserve Bank of India was established in',['1935','1947','1949','1969'],'Nationalised in 1949.'],
+ ['Defence & SSB','The motto of the Indian Air Force is',['Nabha Sparsham Deeptam','Sam No Varunah','Service Before Self','Valour and Faith'],'"Touch the sky with glory", from the Bhagavad Gita.'],
+ ['Defence & SSB','1 nautical mile is about',['1.852 km','1.609 km','1.5 km','2 km'],'1 knot = 1 nautical mile per hour.'],
+ ['Cyber & Placement','Default port for HTTPS',['443','80','22','8080'],'80 is HTTP, 22 is SSH.'],
+ ['Cyber & Placement','Best defence against SQL injection',['Parameterised queries','Hiding error pages','Using HTTPS','Longer passwords'],'Keep data separate from the query.'],
+ ['Cyber & Placement','Which is a symmetric encryption algorithm?',['AES','RSA','ECC','Diffie-Hellman'],'RSA and ECC are asymmetric. DH is key exchange.'],
+ ['Cyber & Placement','Nmap is mainly used for',['Network and port scanning','Password cracking','Packet capture','Web proxying'],'Wireshark captures, Burp proxies.'],
+ ['Cyber & Placement','The CIA triad stands for',['Confidentiality, Integrity, Availability','Control, Identity, Access','Cipher, Integrity, Authentication','Confidentiality, Identity, Audit'],'The base model of information security.'],
+ ['Cyber & Placement','TCP works at which OSI layer?',['Transport (4)','Network (3)','Session (5)','Data link (2)'],'IP is layer 3.'],
+ ['Cyber & Placement','India\'s national agency for cyber incident response',['CERT-In','NTRO','DRDO','NCIIPC'],'Under MeitY. NCIIPC protects critical infrastructure.'],
+ ['Cyber & Placement','Default port for DNS',['53','25','110','67'],'25 SMTP, 110 POP3, 67 DHCP.']
+];
+const CARDS=[
+ ['English','Laconic','Using very few words'],['English','Ephemeral','Lasting a very short time'],['English','Ubiquitous','Found everywhere'],['English','Pragmatic','Practical, realistic'],
+ ['GK & Current Affairs','Article 14','Equality before law'],['GK & Current Affairs','Article 32','Right to constitutional remedies'],['GK & Current Affairs','Article 370','Special status of J&K (abrogated 2019)'],
+ ['Quant','17²','289'],['Quant','13³','2197'],['Quant','1/8 as %','12.5%'],['Quant','1/7 as %','14.28%'],
+ ['Cyber & Placement','Port 22','SSH'],['Cyber & Placement','TCP handshake','SYN → SYN-ACK → ACK'],['Cyber & Placement','XSS','Injecting script into pages other users load'],
+ ['Defence & SSB','First Chief of Defence Staff','General Bipin Rawat (2020)']
+];
+const INTERVAL=[0,1,3,7,16,35];
+function buildSyl(){const o={};Object.entries(EXAM_SYL).forEach(([e,x])=>{o[e]={};Object.entries(x.sec).forEach(([k,l])=>o[e][k]=l.map(n=>({id:uid(),n,s:0})))});return o}
+function migrate(x){if(!x)return null;if(x.v===1){x.syl=buildSyl();x.v=2}if(x.v!==2)return null;
+  const full=buildSyl();Object.keys(full).forEach(e=>{if(!x.syl[e])x.syl[e]=full[e]});
+  if(!x.exams.some(e=>e.id==='e7'))x.exams.push(EXAMS.find(e=>e.id==='e7'));
+  if(!x.road)x.road={};if(!x.papers)x.papers=[];if(!x.myq)x.myq=[];
+  return x}
+
+function fresh(){
+  const syl=buildSyl();
+  const today=new Date();
+  return {v:2,road:{},name:'Inba',target:120,leave:'7:30',theme:'auto',exams:EXAMS.map(e=>({...e})),syl,sessions:[],mocks:[],
+    qstats:{},drillBest:{},running:null,
+    cards:CARDS.map(([d,f,b])=>({id:uid(),d,f,b,box:1,due:dkey(today)})),
+    notes:[{id:uid(),t:'Percent to fraction table',s:'Quant',b:'1/2 = 50%  1/3 = 33.33%  1/4 = 25%  1/5 = 20%\n1/6 = 16.66%  1/7 = 14.28%  1/8 = 12.5%  1/9 = 11.11%\n1/11 = 9.09%  1/12 = 8.33%\n\nUse these to turn percentage questions into fraction questions.',at:Date.now()}]};
+}
+
+/* ---------- storage: claude db (synced, private) with local cache ---------- */
+const LKEY='studydesk-v1';
+let S;
+try{S=JSON.parse(localStorage.getItem(LKEY)||'null')}catch(e){S=null}
+S=migrate(S)||fresh();
+let docRef=null, writing=false, dirty=false, saveT=null, synced=false;
+function setSync(t){$('#sync').textContent=t;const w=$('#dataWhere');if(w)w.textContent=synced?'Your data is synced to your Claude account and kept private to you. It also opens offline on this device.':'Your data is kept in this browser. Copy a backup now and then so you never lose it.'}
+function save(){
+  try{localStorage.setItem(LKEY,JSON.stringify(S))}catch(e){}
+  if(!docRef)return;
+  dirty=true;clearTimeout(saveT);saveT=setTimeout(flush,1200);
+}
+async function flush(){
+  if(writing||!dirty||!docRef)return;
+  writing=true;dirty=false;setSync('Saving…');
+  try{await docRef.set({json:JSON.stringify(S),at:Date.now()});setSync('Synced')}
+  catch(e){setSync('Saved on this device');}
+  writing=false;if(dirty)flush();
+}
+async function connect(){
+  if(!window.claude||!window.claude.use)return setSync('Saved on this device');
+  try{
+    const [db,user]=await Promise.all([claude.use('db'),claude.use('user')]);
+    if(!db||!user)return setSync('Saved on this device');
+    const id=await user.id(); if(!id)return setSync('Saved on this device');
+    colRef=db.collection('data/users/'+id);const ref=colRef.doc('desk');
+    const snap=await ref.get();
+    docRef=ref;synced=true;
+    if(snap.exists){
+      const d=snap.data();
+      try{const remote=migrate(JSON.parse(d.json));if(remote){S=remote;try{localStorage.setItem(LKEY,JSON.stringify(S))}catch(e){};renderAll()}}catch(e){}
+      setSync('Synced');
+    }else{dirty=true;flush()}
+    loadRemotePapers();
+  }catch(e){setSync('Saved on this device')}
+}
+
+/* ---------- helpers on data ---------- */
+const minsByDay=()=>{const m={};S.sessions.forEach(s=>m[s.d]=(m[s.d]||0)+s.m);return m};
+function streaks(){
+  const m=minsByDay();let cur=0,d=new Date();
+  if(!m[dkey(d)])d=addDays(d,-1);
+  while(m[dkey(d)]){cur++;d=addDays(d,-1)}
+  const keys=Object.keys(m).sort();let best=0,run=0,prev=null;
+  keys.forEach(k=>{const dt=parseKey(k);run=(prev&&Math.round((dt-prev)/864e5)===1)?run+1:1;best=Math.max(best,run);prev=dt});
+  return {cur,best};
+}
+const dueCards=()=>{const t=dkey();return S.cards.filter(c=>c.due<=t)};
+function logSession(sub,m,d,place,note){if(m<1)return;S.sessions.push({id:uid(),sub,m:Math.round(m),d:d||dkey(),p:place||'',n:note||'',at:Date.now()});save()}
+
+let toastT;function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('on'),2200)}
+
+/* ---------- nav ---------- */
+function buildNav(){
+  $('#nav').innerHTML=VIEWS.map(([k,l])=>`<button data-v="${k}">${ICON[k]}<span>${l}</span></button>`).join('');
+  $('#mob').innerHTML=VIEWS.filter(v=>v[0]!=='set').map(([k,l])=>`<button data-v="${k}">${ICON[k]}<span>${l}</span></button>`).join('');
+  $$('[data-v]').forEach(b=>b.onclick=()=>go(b.dataset.v));
+}
+let cur='today';
+function go(v){
+  cur=v;VIEWS.forEach(([k])=>$('#v-'+k).hidden=k!==v);
+  $$('[data-v]').forEach(b=>b.dataset.v===v?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
+  try{history.replaceState(null,'','#'+v)}catch(e){}
+  render(v);window.scrollTo(0,0);
+}
+
+/* ---------- TODAY ---------- */
+const ROT={0:['Full mock test','Review mistakes'],1:['Quant','Cyber & Placement'],2:['Reasoning','Cyber & Placement'],3:['Quant','Cyber & Placement'],4:['Reasoning','Cyber & Placement'],5:['English','Cyber & Placement'],6:['GK & Current Affairs','Defence & SSB']};
+function slots(){
+  const dow=new Date().getDay();let [a,b]=ROT[dow];const wk=typeof weakArea==='function'?weakArea():null;if(wk&&dow>=1&&dow<=5)a=AREA_SUBJ[wk];
+  if(dow===0)return[
+    ['Morning','Full mock test','2 hours, exam conditions. Log the score in Progress.','Quant','mock'],
+    ['Afternoon','Review the mock','Every wrong answer goes into Notes or a flashcard.','Quant','focus'],
+    ['Evening','Weekly syllabus check','Move topics forward, plan next week.','Cyber & Placement','syl'],
+    ['Night','Rest','Sleep by 10:30. Sunday recovery counts.','',null]];
+  return[
+    ['Bus · to college','Bus mode','Due cards, vocab and GK. Turn on Listen mode if reading makes you sick.','English','bus'],
+    ['College','Classes + 1 free period','Use one gap for 10 drill rounds.','Quant','drill'],
+    ['Bus · return','Sleep or current affairs','If tired, sleep. Rest here makes the evening work.','GK & Current Affairs',null],
+    ['Home · arrive','Eat, then 25-min nap','Set an alarm. Longer naps wreck night sleep.','',null],
+    ['Block A · 50m',a,wk&&dow>=1&&dow<=5?'Your weakest area by accuracy. Concept for 20 min, then timed questions.':'Concept for 20 min, then timed questions.',a,'focus'],
+    ['Block B · 50m',b,dow===6?'AFCAT/CDS practice or SSB reading.':'One DSA problem set or one hands-on lab.',b,'focus'],
+    ['Night · 20m','Revise + plan tomorrow','Due cards, one note, then sleep by 11.','English','cards']];
+}
+function renderToday(){
+  const h=new Date().getHours();
+  $('#hello').textContent=(h<12?'Morning':h<17?'Afternoon':'Evening')+', '+(S.name||'there');
+  $('#todaySub').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'})+' · '+ROT[new Date().getDay()].join(' + ');
+  const m=minsByDay(),t=m[dkey()]||0;
+  $('#kToday').textContent=fmtMin(t);$('#kTodayL').textContent='of '+fmtMin(S.target)+' today';
+  {const st=streaks();$('#kStreak').textContent=st.cur;$('#kStreak').nextElementSibling.textContent=st.shield?'day streak · shield used':'day streak';}
+  renderRank();renderMission();renderBanner();
+  let wk=0;for(let i=0;i<7;i++)wk+=m[dkey(addDays(new Date(),-i))]||0;
+  $('#kWeek').textContent=(wk/60).toFixed(1)+'h';
+  $('#kDue').textContent=dueCards().length;
+  const sl=slots();
+  const nowIdx=h<9?0:h<16?1:h<18?2:h<19?3:h<20?4:h<21?5:6;
+  $('#slots').innerHTML=sl.map((s,i)=>`<div class="slot${i===nowIdx&&sl.length===7?' now':''}"><div class="t">${esc(s[0])}</div><div><div class="w">${esc(s[1])}</div><div class="d">${esc(s[2])}</div></div>${s[4]?`<button class="btn sm" data-act="${s[4]}" data-sub="${esc(s[3])}">${s[4]==='focus'?'Start':s[4]==='cards'?'Cards':s[4]==='bus'?'Board':s[4]==='drill'?'Drill':s[4]==='mock'?'Log mock':'Open'}</button>`:'<span></span>'}</div>`).join('');
+  $$('#slots [data-act]').forEach(b=>b.onclick=()=>{
+    const a=b.dataset.act,sub=b.dataset.sub;
+    if(a==='focus'){go('focus');if(SUBJECTS.includes(sub))$('#tSubject').value=sub}
+    else if(a==='cards'){go('prac');ptab('cards')}
+    else if(a==='bus')startBus();
+    else if(a==='drill'){go('prac');ptab('drill')}
+    else if(a==='mock'){go('prog');$('#mkScore').focus()}
+    else if(a==='syl')go('syl');
+  });
+  const today=new Date();today.setHours(0,0,0,0);
+  const ex=[...S.exams].filter(e=>e.date).sort((a,b)=>a.date.localeCompare(b.date));
+  $('#counts').innerHTML=ex.map(e=>{const days=Math.round((parseKey(e.date)-today)/864e5);
+    return `<div class="count"><div><div style="font-weight:600">${esc(e.name)}</div><div class="m">${parseKey(e.date).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}${e.est?' · est.':''}</div></div><div class="n">${days<0?'done':days}<small>${days<0?'':'days'}</small></div></div>`}).join('')||'<div class="empty">Add exams in Settings.</div>';
+}
+
+/* ---------- FOCUS ---------- */
+let mode=50,tick=null,wake=null;
+function fillSubjects(){
+  const o=SUBJECTS.map(s=>`<option>${esc(s)}</option>`).join('');
+  ['#tSubject','#mSubject','#nSub'].forEach(id=>{const el=$(id),v=el.value;el.innerHTML=o;if(v)el.value=v});
+  $('#cfD').innerHTML=o;
+  {const v=$('#qSec').value;$('#qSec').innerHTML='<option value="">All questions</option><option value="__mine">My saved questions ('+((S.myq||[]).length)+')</option>'+((S.papers||[]).length?'<option value="__papers">All imported papers</option>'+S.papers.map(p=>`<option value="p:${p.id}">Paper: ${esc(p.name)}</option>`).join(''):'')+SUBJECTS.filter(s=>QB.some(q=>q[0]===s)).map(s=>`<option>${esc(s)}</option>`).join('');if(v)$('#qSec').value=v}
+  $('#ppExam').innerHTML=Object.keys(EXAM_SYL).filter(e=>!e.includes('my plan')).map(e=>`<option>${esc(e)}</option>`).join('');
+  $('#mqE').innerHTML=Object.keys(EXAM_SYL).map(e=>`<option>${esc(e)}</option>`).join('');
+  $('#mkExam').innerHTML=S.exams.map(e=>`<option>${esc(e.name)}</option>`).join('')+'<option>Sectional test</option>';
+}
+function elapsed(){const r=S.running;return r?(Date.now()-r.start)/1000:0}
+function drawClock(){
+  const r=S.running;const total=(r?r.mode:mode)*60;const el=elapsed();
+  let show=total?Math.max(0,total-el):el;
+  const mm=Math.floor(show/60),ss=Math.floor(show%60);
+  $('#clock').textContent=(mm>=100?mm:pad2(mm))+':'+pad2(ss);
+  $('#ring').style.width=(total?Math.min(100,el/total*100):r?100:0)+'%';
+  if(r&&total&&el>=total){finish(true)}
+}
+function syncTimerUI(){
+  const r=S.running;
+  $('#tStart').disabled=!!r;$('#tStop').disabled=!r;$('#tCancel').disabled=!r;
+  $('#timerState').textContent=r?'Running':'Ready';$('#timerState').className='tag'+(r?' acc':'');
+  $$('#modeSeg button').forEach(b=>{b.setAttribute('aria-pressed',+b.dataset.m===(r?r.mode:mode));b.disabled=!!r});
+  ['#tSubject','#tPlace'].forEach(i=>$(i).disabled=!!r);
+  if(r){$('#tSubject').value=r.sub;$('#tPlace').value=r.place;$('#tNote').value=r.note||''}
+  clearInterval(tick);if(r)tick=setInterval(drawClock,500);drawClock();
+}
+async function lockOn(){try{wake=await navigator.wakeLock?.request('screen')}catch(e){}}
+function finish(auto){
+  const r=S.running;if(!r)return;const m=Math.min(elapsed()/60,r.mode||600);
+  S.running=null;
+  if(m>=1){logSession(r.sub,m,dkey(new Date(r.start)),r.place,$('#tNote').value||r.note);toast((auto?'Time. ':'')+'Logged '+fmtMin(Math.round(m))+' of '+r.sub)}
+  else{save();toast('Under a minute, not logged')}
+  try{wake&&wake.release()}catch(e){}
+  if(auto){try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=660;o.connect(g);g.connect(a.destination);g.gain.setValueAtTime(.15,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+1.2);o.start();o.stop(a.currentTime+1.2)}catch(e){}}
+  syncTimerUI();renderSessions();
+}
+function renderSessions(){
+  const rows=[...S.sessions].sort((a,b)=>b.at-a.at).slice(0,12);
+  $('#sessTable').innerHTML=rows.length?'<tr><th>Date</th><th>Subject</th><th>Notes</th><th class="num">Time</th><th></th></tr>'+rows.map(s=>`<tr><td class="mono">${s.d.slice(5)}</td><td>${esc(s.sub)}${s.p?` <span class="tag">${esc(s.p)}</span>`:''}</td><td style="color:var(--muted)">${esc(s.n)}</td><td class="num">${fmtMin(s.m)}</td><td><button class="btn ghost sm" data-del="${s.id}" aria-label="Delete session">×</button></td></tr>`).join(''):'<tr><td class="empty">No sessions yet. Start the timer or log one manually.</td></tr>';
+  $$('#sessTable [data-del]').forEach(b=>b.onclick=()=>{S.sessions=S.sessions.filter(s=>s.id!==b.dataset.del);save();renderSessions()});
+}
+function initFocus(){
+  $$('#modeSeg button').forEach(b=>b.onclick=()=>{mode=+b.dataset.m;syncTimerUI()});
+  $('#tStart').onclick=()=>{S.running={start:Date.now(),mode,sub:$('#tSubject').value,place:$('#tPlace').value,note:$('#tNote').value};save();lockOn();syncTimerUI()};
+  $('#tStop').onclick=()=>finish(false);
+  $('#tCancel').onclick=()=>{S.running=null;save();syncTimerUI();toast('Discarded')};
+  $('#quickStart').onclick=()=>go('focus');$('#busBtn').onclick=()=>startBus();
+  $('#mDate').value=dkey();
+  $('#mAdd').onclick=()=>{const m=+$('#mMin').value;if(!(m>0))return toast('Enter minutes');logSession($('#mSubject').value,m,$('#mDate').value||dkey(),'','manual');renderSessions();toast('Added '+fmtMin(m))};
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.running)lockOn()});
+}
+
+/* ---------- SYLLABUS ---------- */
+/* ---------- EXAM GUIDES: books, study method, practice, in order ---------- */
+const GUIDE={
+ 'SSC CGL':{books:['NCERT Maths Class 6 to 10 (free)','Rakesh Yadav, Class Notes: Arithmetic, then Advance Maths','R.S. Aggarwal, Verbal & Non-Verbal Reasoning','Neetu Singh, Plinth to Paramount','Lucent’s General Knowledge + Lucent’s Computer','Kiran, SSC CGL previous papers'],
+  study:['Months 1 to 2: NCERT maths, then Arithmetic chapters one by one','Months 3 to 4: Advance Maths (geometry, trigonometry, algebra)','Daily: 1 reasoning chapter, 1 English grammar rule, 1 Lucent chapter on the bus','Make a formula note for every maths chapter in Notes'],
+  practice:['After each chapter: solve all its questions, then 20 past-paper questions on it','Speed drills every day: squares, cubes, fraction percentages','From month 5: one sectional test a day, one full mock every Sunday','Analyse each mock: every wrong answer becomes a note or flashcard'],
+  tip:'Tier 1 has 0.50 negative marking, so attempt only what you can solve. GA is the fastest section, finish it first.'},
+ 'IBPS PO':{books:['Rakesh Yadav Arithmetic (shared with SSC)','Arun Sharma, Quantitative Aptitude (DI chapters)','M.K. Pandey, Analytical Reasoning','S.P. Bakshi, Objective General English','RBI and PIB monthly for banking awareness (free)'],
+  study:['Arithmetic first, then DI, because most DI is arithmetic in tables and charts','Reasoning: puzzles and seating every single day, they are half the section','English: read one editorial a day, note 5 words into Flashcards','Banking awareness: 20 minutes daily from RBI and PIB updates'],
+  practice:['Prelims is 20 min per section: practise with the timer at exactly 20 min','Solve 3 puzzles and 2 DI sets daily','Two prelims mocks a week in the last 3 months','For Mains descriptive: write one essay a week and check it on Write & Improve'],
+  tip:'Sectional time limits mean you must clear every section. Never leave a section to the end.'},
+ 'AFCAT':{books:['Arihant Pathfinder AFCAT','NCERT Maths Class 6 to 10 (free)','Lucent’s General Knowledge (shared)','AFCAT past papers and the official mock on afcat.cdac.in','EKT: your GATE CS books (digital, networks, COA)','N.K. Natarajan, SSB Interview: The Complete Guide'],
+  study:['Numerical ability = SSC arithmetic, so it is already covered','Military aptitude and spatial: practise the figure questions in Pathfinder daily','GK: defence news, awards, sports and current affairs every week','EKT: revise GATE digital logic, COA and networks'],
+  practice:['Full 2-hour paper every weekend in exam conditions','Mark only sure answers: +3 right, minus 1 wrong','Start SSB prep the day you apply: OIR tests, PPDT stories, WAT words daily','Run and do push-ups 5 days a week for the SSB'],
+  tip:'Final-year students can apply. Two attempts a year, Feb and Aug.'},
+ 'CDS':{books:['Arihant Pathfinder CDS','NCERT Maths Class 6 to 10 (free)','Rakesh Yadav Advance Maths (shared with SSC)','Lucent’s GK + NCERT Class 6 to 10 science and social','UPSC CDS past papers (free on upsc.gov.in)','N.K. Natarajan, SSB Interview guide'],
+  study:['Maths is the deciding paper. Cover NCERT 6 to 10 fully first','GK: history, polity and geography from NCERT, current affairs weekly','English: same as SSC, plus reading one long article a day'],
+  practice:['Solve 10 years of CDS papers, one per weekend','Each paper is 2 h with minus 1/3: practise skipping hard questions','SSB prep in parallel, same as AFCAT'],
+  tip:'Final-year students can apply for IMA, INA and AFA. OTA needs only English and GK.'},
+ 'UPSC CSE Prelims':{books:['NCERT Class 6 to 12: History, Geography, Polity, Economics, Science (free)','M. Laxmikanth, Indian Polity','Spectrum, A Brief History of Modern India','G.C. Leong, Physical and Human Geography','Ramesh Singh, Indian Economy + Economic Survey (free)','Shankar IAS Environment; Nitin Singhania Art & Culture','UPSC past papers (free)'],
+  study:['Read all NCERTs once before any reference book','Then one reference book per subject, read twice','Current affairs daily from PIB and one newspaper, make monthly notes','Keep notes short. Revise them every Sunday'],
+  practice:['After each subject: solve UPSC past questions of that subject','Weekly CSAT practice. It needs 33% and many fail it','Full prelims mocks from 4 months before the exam','Mains needs answer writing: start only after prelims basics are solid'],
+  tip:'Choose UPSC only as a full-time 1 to 2 year plan. Decide after your final year.'},
+ 'GATE CS':{books:['Algorithms: CLRS','OS: OSTEP (free) or Galvin','DBMS: Korth','Networks: Kurose & Ross','TOC: Peter Linz','Compilers: Aho & Ullman','COA: Hamacher; Digital: Morris Mano','Discrete maths: Kenneth Rosen','NPTEL lectures + GATE Overflow (free)'],
+  study:['Order: Discrete maths and DSA, then OS, DBMS, CN, then COA, Digital, TOC, Compilers','One subject at a time: NPTEL lecture, then the book chapter, then notes','General Aptitude is 15 marks and shares prep with SSC, keep it light'],
+  practice:['Finish each subject with its GATE Overflow past questions (10 years)','Keep a mistakes notebook per subject','Last 3 months: full timed papers twice a week','Practise NAT questions on the virtual calculator, they have no negative marks'],
+  tip:'Sit GATE 2027 in 3rd year for practice. The score lasts 3 years for PSUs and M.Tech.'},
+ 'Placement (my plan)':{books:['Striver A2Z DSA sheet (free)','LeetCode Top Interview 150 (free)','OSTEP, Korth, Kurose & Ross (shared with GATE)','Cracking the Coding Interview','TryHackMe, PortSwigger Academy (free)','R.S. Aggarwal Quantitative Aptitude or IndiaBIX'],
+  study:['One DSA topic a day in Block B, in Striver order','CS core alongside your semester courses','Cyber: one TryHackMe room or PortSwigger lab every weekend','Build 2 projects: e.g. a vulnerability scanner and a log analyser in Python'],
+  practice:['2 LeetCode problems a day, review patterns weekly','Aptitude test on IndiaBIX twice a week','Mock interviews with friends from 2 months before','Join CTFs on CTFtime with your college team'],
+  tip:'Put your projects and CTF results on GitHub and your resume. They matter more than marks for cyber roles.'}
+};
+function guideHTML(e){const g=GUIDE[e];if(!g)return'';
+  const ol=l=>'<ol>'+l.map(x=>`<li>${esc(x)}</li>`).join('')+'</ol>';
+  return `<div class="guide grid3"><div><h2>Books, in order</h2>${ol(g.books)}</div><div><h2>How to study</h2>${ol(g.study)}</div><div><h2>How to practise</h2>${ol(g.practice)}</div></div><p class="gtip"><b>Remember.</b> ${esc(g.tip)}</p>`}
+const PYQ_SRC={
+ 'SSC CGL':[['SSC answer keys with question papers','https://ssc.gov.in','SSC posts each exam’s questions with the answer key after the exam. Open Answer Keys on the site.']],
+ 'IBPS PO':[['IBPS official site','https://www.ibps.in','IBPS does not publish past papers. Free memory-based papers are on prep sites; use IndiaBIX for topic practice.'],['IndiaBIX topic practice','https://www.indiabix.com','']],
+ 'AFCAT':[['AFCAT official site','https://afcat.cdac.in','Has the official sample questions and the online mock test.']],
+ 'CDS':[['UPSC previous question papers','https://upsc.gov.in/examinations/previous-question-papers','Pick Combined Defence Services, then the year.']],
+ 'UPSC CSE Prelims':[['UPSC previous question papers','https://upsc.gov.in/examinations/previous-question-papers','Pick Civil Services (Preliminary), then the year.']],
+ 'GATE CS':[['GATE Overflow','https://gateoverflow.in','Every GATE CS question since the 1990s, sorted by subject and topic, with solutions.'],['GATE 2027 official site','https://gate2027.iitm.ac.in','Official past papers and the mock test interface.']],
+ 'Placement (my plan)':[['LeetCode','https://leetcode.com','Search the topic name under Problems, filter by tag.'],['IndiaBIX','https://www.indiabix.com','Placement aptitude questions by topic.']]
+};
+function pyqHTML(e,t){const l=PYQ_SRC[e]||[];return `<div><b>Solve real past questions on ${esc(t)}.</b> Read the concept, then open the papers below and find questions on this topic. Tap PYQ next to a topic each time you solve one. Save the ones you got wrong in Practice, so they come back.</div>`+l.map(x=>`<div class="row"><a href="${x[1]}" target="_blank" rel="noopener">${esc(x[0])}</a>${x[2]?`<span class="sub" style="margin:0">${esc(x[2])}</span>`:''}</div>`).join('')}
+/* ---------- IMPORTED OFFICIAL PAPERS ---------- */
+const PQ={};let colRef=null,paperStop=null;
+function loadLocalPapers(){(S.papers||[]).forEach(p=>{try{const v=JSON.parse(localStorage.getItem('studydesk-p-'+p.id)||'null');if(v)PQ[p.id]=v}catch(e){}})}
+async function loadRemotePapers(){if(!colRef)return;for(const p of (S.papers||[])){if(PQ[p.id])continue;try{const sn=await colRef.doc('paper_'+p.id).get();if(sn.exists){PQ[p.id]=JSON.parse(sn.data().json);try{localStorage.setItem('studydesk-p-'+p.id,sn.data().json)}catch(e){}}}catch(e){}}renderPapers();fillSubjects()}
+async function storePaper(id){const j=JSON.stringify(PQ[id]);try{localStorage.setItem('studydesk-p-'+id,j)}catch(e){}if(colRef){try{await colRef.doc('paper_'+id).set({json:j,at:Date.now()})}catch(e){toast('Saved on this device only')}}}
+function paperQs(){const out=[];(S.papers||[]).forEach(p=>(PQ[p.id]||[]).forEach((x,i)=>{
+  const sec=p.exam+(x.t?' · '+x.t:'');const src=p.name;
+  if(x.a==null)out.push([sec,x.q,x.o,'From '+src,'paper',{pid:p.id,i},true]);
+  else out.push([sec,x.q,[x.o[x.a]].concat(x.o.filter((_,j)=>j!==x.a)),'From '+src,'paper',{pid:p.id,i},false]);}));return out}
+function loadScript(u){return new Promise((ok,no)=>{const s=document.createElement('script');s.src=u;s.onload=ok;s.onerror=()=>no(new Error('load'));document.head.appendChild(s)})}
+async function pdfText(file){
+  const B='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+  if(!window.pdfjsLib){await loadScript(B+'pdf.min.js');await loadScript(B+'pdf.worker.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc=B+'pdf.worker.min.js'}
+  const doc=await pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;let t='';
+  for(let i=1;i<=doc.numPages;i++){const pg=await doc.getPage(i);const c=await pg.getTextContent();let line='',lastY=null;
+    c.items.forEach(it=>{const y=it.transform?it.transform[5]:null;if(lastY!==null&&y!==null&&Math.abs(y-lastY)>2){t+=line+'\n';line=''}line+=it.str+(it.hasEOL?'\n':' ');lastY=y});t+=line+'\n';
+    $('#ppStatus').textContent='Reading page '+i+' of '+doc.numPages+'…'}
+  return t;
+}
+async function importPaper(){
+  const f=$('#ppFile').files[0];if(!f)return toast('Choose the PDF first');
+  const exam=$('#ppExam').value;const name=($('#ppName').value.trim()||f.name.replace(/\.pdf$/i,''));
+  const sample=window.claude&&window.claude.use?await claude.use('sample'):null;
+  if(!sample){$('#ppStatus').textContent='Importing needs the app opened in Claude (it uses your Claude account to split the paper into questions).';return}
+  $('#ppGo').disabled=true;$('#ppStop').hidden=false;const ctl=new AbortController();paperStop=ctl;
+  try{
+    const text=(await pdfText(f)).replace(/[ \t]+/g,' ');
+    if(text.trim().length<200){$('#ppStatus').textContent='This PDF has no readable text (it is probably a scanned image). Try the text version of the paper.';return}
+    const secs=Object.keys((EXAM_SYL[exam]||{}).sec||{});const N=9000,OV=1200;const chunks=[];for(let i=0;i<text.length;i+=N-OV)chunks.push(text.slice(i,i+N));
+    const qs=[];const seen=new Set();
+    for(let k=0;k<chunks.length;k++){
+      $('#ppStatus').textContent='Finding questions: part '+(k+1)+' of '+chunks.length+' ('+qs.length+' so far)…';
+      const prompt=`Below is text extracted from an official ${exam} exam paper PDF. Extract every multiple-choice question that is fully present.
+Rules:
+- Copy the question and options exactly as written, in English only (drop Hindi duplicates). Do not rewrite, invent, translate or solve anything.
+- Skip any question that depends on a figure, image, chart or table that is not in the text, and any question cut off at the start or end of the text.
+- "a": the 0-based index of the correct option ONLY if the text itself marks it (for example "Correct Answer", "Ans", "Right", a tick, or an answer key line). Otherwise null.
+- "t": the best matching section from this list: ${JSON.stringify(secs)}.
+Return only JSON: {"questions":[{"q":"...","o":["...","..."],"a":null,"t":"..."}]}
+
+TEXT:
+${chunks[k]}`;
+      let res;try{res=await sample.json(prompt,{signal:ctl.signal,modelTier:'default'})}catch(e){if(e.code==='cancelled')break;if(e.code==='not_granted'){$('#ppStatus').textContent='Import needs permission to use Claude. Allow it and try again.';return}throw e}
+      (res&&res.questions||[]).forEach(x=>{if(!x||!x.q||!Array.isArray(x.o)||x.o.length<2)return;const key=x.q.slice(0,80).toLowerCase();if(seen.has(key))return;seen.add(key);
+        qs.push({q:String(x.q),o:x.o.map(String).slice(0,5),a:(Number.isInteger(x.a)&&x.a>=0&&x.a<x.o.length)?x.a:null,t:String(x.t||'')})});
+    }
+    if(!qs.length){$('#ppStatus').textContent='No questions found. Check that this is the question paper PDF.';return}
+    const id=uid();(S.papers||(S.papers=[])).push({id,name,exam,n:qs.length,keyed:qs.filter(x=>x.a!=null).length,at:Date.now()});PQ[id]=qs;
+    await storePaper(id);save();fillSubjects();renderPapers();
+    $('#ppStatus').textContent=`Imported ${qs.length} real questions from ${name}.`+(qs.some(x=>x.a==null)?' Some have no answer key in this file: when you answer one, check the official key and tap the right option to save it.':'');
+    $('#ppFile').value='';$('#ppName').value='';
+  }catch(e){$('#ppStatus').textContent='Import stopped: '+(e.code==='rate_limited'?'too many requests, wait a minute and try again.':'could not read this file.')}
+  finally{$('#ppGo').disabled=false;$('#ppStop').hidden=true;paperStop=null}
+}
+function renderPapers(){
+  const l=S.papers||[];
+  $('#ppList').innerHTML=l.length?l.map(p=>`<div class="res"><span><b>${esc(p.name)}</b></span><button class="btn ghost sm" data-pdel="${p.id}">Remove</button><span class="d">${esc(p.exam)} · ${p.n} questions · ${(PQ[p.id]||[]).filter(x=>x.a!=null).length} with answers</span></div>`).join(''):'<div class="empty">No papers yet. Download one from the official site, then import it here.</div>';
+  $$('#ppList [data-pdel]').forEach(b=>{let armed=false;b.onclick=async()=>{if(!armed){armed=true;b.textContent='Tap again';setTimeout(()=>{armed=false;b.textContent='Remove'},2500);return}
+    const id=b.dataset.pdel;S.papers=S.papers.filter(p=>p.id!==id);delete PQ[id];try{localStorage.removeItem('studydesk-p-'+id)}catch(e){}if(colRef){try{await colRef.doc('paper_'+id).delete()}catch(e){}}save();fillSubjects();renderPapers()}});
+}
+let openTrack=null,openExam=Object.keys(EXAM_SYL)[0];const SLAB=['To do','Learning','Revised','Strong'];
+const pct=l=>l.length?Math.round(l.reduce((a,x)=>a+x.s,0)/(l.length*3)*100):0;
+const examTopics=e=>Object.values(S.syl[e]||{}).flat();
+function renderSyl(){
+  if(!S.syl[openExam])openExam=Object.keys(S.syl)[0];
+  const meta=EXAM_SYL[openExam]||{};
+  $('#sylExams').innerHTML=Object.keys(S.syl).map(e=>`<button role="tab" aria-selected="${e===openExam}" data-e="${esc(e)}">${esc(e)} <span class="mono">${pct(examTopics(e))}%</span></button>`).join('');
+  $$('#sylExams button').forEach(b=>b.onclick=()=>{openExam=b.dataset.e;openTrack=null;renderSyl()});
+  $('#sylSrc').innerHTML=`<span><b>Pattern.</b> ${esc(meta.pattern||'')}</span><span><b>Source.</b> ${esc(meta.src||'Your own topics')}${meta.url?` · <a href="${meta.url}" target="_blank" rel="noopener">${esc(meta.url.replace('https://',''))}</a>`:''}</span>`;
+  $('#sylBack').hidden=!openTrack;$('#sylAdd').hidden=!openTrack;
+  $('#sylPyq').hidden=!openTrack;if(openTrack){$('#sylPyq').innerHTML=pyqHTML(openExam,openTrack)+bossBtn(openExam,openTrack);const bg=$('#bossGo');if(bg)bg.onclick=()=>startBoss(openExam,openTrack)}
+  $('#sylGuide').innerHTML=guideHTML(openExam);$('#sylGuide').hidden=!!openTrack||!GUIDE[openExam];
+  const secs=S.syl[openExam];
+  if(!openTrack){
+    $('#sylTitle').textContent='Syllabus';$('#sylSub').textContent='Pick an exam: its books, how to study, how to practise, then every official topic to tick off.';
+    $('#sylList').innerHTML=Object.entries(secs).map(([t,l])=>{const p=pct(l);
+      return `<button class="track" data-t="${esc(t)}"><span><b>${esc(t)}</b><br><span class="sub" style="margin:0;font-size:13px">${l.filter(x=>x.s===3).length} strong · ${l.length} topics${(S.badges||{})[openExam+'|'+t]?' · <b style="color:var(--accent)">Boss cleared</b>':''}</span></span><span class="bar"><i style="width:${p}%"></i></span><span class="mono" style="text-align:right">${p}%</span></button>`}).join('');
+    $$('#sylList .track').forEach(b=>b.onclick=()=>{openTrack=b.dataset.t;renderSyl()});
+  }else{
+    const l=secs[openTrack];
+    $('#sylTitle').textContent=openTrack;$('#sylSub').textContent=openExam+'. Tap a status to move it forward. Right-click or long-press to step back.';
+    $('#sylList').innerHTML=l.map(x=>`<div class="topic"><span>${esc(x.n)}</span><button class="pyq${x.q?' has':''}" data-q="${x.id}" title="Past-paper questions solved. Right-click to undo.">PYQ ${x.q||0}</button><button class="st" data-id="${x.id}" data-s="${x.s}">${SLAB[x.s]}</button></div>`).join('')||'<div class="empty">No topics yet.</div>';
+    $$('#sylList .st').forEach(b=>{
+      const step=d=>{const x=l.find(y=>y.id===b.dataset.id);x.s=(x.s+d+4)%4;b.dataset.s=x.s;b.textContent=SLAB[x.s];save()};
+      b.onclick=()=>step(1);b.oncontextmenu=e=>{e.preventDefault();step(-1)};
+    });
+    $$('#sylList .pyq').forEach(b=>{const x=l.find(y=>y.id===b.dataset.q);
+      const st=d=>{x.q=Math.max(0,(x.q||0)+d);b.textContent='PYQ '+x.q;b.classList.toggle('has',x.q>0);if(d>0&&x.s===0){x.s=1;renderSyl()}save()};
+      b.onclick=()=>st(1);b.oncontextmenu=e=>{e.preventDefault();st(-1)}});
+  }
+}
+/* ---------- ROADMAP ---------- */
+const ROAD=[
+ {stage:'Stage 1 · Foundation',when:'Nov 2026 to Jan 2027',why:'Zero to basics. Everything later stands on this.',steps:[
+  ['r1','NCERT Maths, Class 6 to 10','Free · ncert.nic.in','Fractions, percentages, ratio, algebra, geometry and mensuration from scratch. Skim what you know, solve every exercise you don’t.','All exams'],
+  ['r2','Rakesh Yadav, Class Notes (Arithmetic)','Book','After NCERT. One chapter a day: read the method, solve the chapter, then 10 speed drills in Practice.','SSC · IBPS · AFCAT · CDS'],
+  ['r3','R.S. Aggarwal, Verbal & Non-Verbal Reasoning','Book','Verbal part first: series, coding, blood relations, direction, syllogism. Non-verbal after.','SSC · IBPS · AFCAT · GATE GA'],
+  ['r4','Neetu Singh, Plinth to Paramount','Book','Grammar rules first, then error spotting. Put new words into Flashcards for the bus.','SSC · IBPS · AFCAT · CDS'],
+  ['r5','Lucent’s General Knowledge','Book','One chapter on each bus ride. Order: Polity, History, Geography, Economy, Science.','SSC · AFCAT · CDS · UPSC'],
+  ['r6','Striver A2Z DSA sheet, steps 1 to 3','Free · takeuforward.org','Basics, sorting and arrays in one language (C++ or Java). One topic a day in Block B.','Placement · GATE']]},
+ {stage:'Stage 2 · Placement + GATE core',when:'Feb to Jul 2027',why:'Placements open in 7th sem. These subjects also cover half of GATE.',steps:[
+  ['r7','Striver A2Z DSA sheet, remaining steps + LeetCode','Free','Linked list, trees, graphs, DP. Then LeetCode Top Interview 150.','Placement · GATE'],
+  ['r8','OSTEP (Operating Systems)','Free book','Virtualisation, concurrency, persistence. Pair with your OS semester course.','GATE · Placement'],
+  ['r9','Korth, Database System Concepts','Book','ER model, relational algebra, SQL, normalisation, transactions, indexing.','GATE · Placement'],
+  ['r10','Kurose & Ross, Computer Networking','Book','Top-down: application, transport, network, link layer.','GATE · Placement · Cyber'],
+  ['r11','TryHackMe Pre Security + PortSwigger Academy','Free','Hands-on cyber skills for your resume and interviews.','Cyber · Placement'],
+  ['r12','Sit GATE 2027 as a practice attempt','Feb 2027','3rd-year students are eligible. No pressure, just learn the exam.','GATE'],
+  ['r13','Cracking the Coding Interview','Book','Read 1 month before placements. Do its mock interview chapters.','Placement']]},
+ {stage:'Stage 3 · Final year: defence + GATE',when:'Aug 2027 to Feb 2028',why:'AFCAT and CDS accept final-year students. GATE 2028 is the real attempt.',steps:[
+  ['r14','Rakesh Yadav, Class Notes (Advance Maths)','Book','Geometry, trigonometry, algebra, mensuration.','SSC · CDS · AFCAT'],
+  ['r15','Arihant Pathfinder AFCAT + past papers','Book','Solve past papers in 2 h timed sittings. Log each score in Progress.','AFCAT'],
+  ['r16','Arihant Pathfinder CDS + past papers','Book · UPSC site for papers','English, GK and Maths papers. Past papers are free on upsc.gov.in.','CDS'],
+  ['r17','N.K. Natarajan, SSB Interview: The Complete Guide','Book','OIR, PPDT, TAT/WAT/SRT, GTO, interview. Start after you apply.','AFCAT · CDS'],
+  ['r18','GATE remaining: CLRS, Peter Linz, Aho & Ullman, Hamacher, Morris Mano, Rosen','Books','One subject at a time with NPTEL lectures. Finish each with GATE Overflow past questions.','GATE'],
+  ['r19','GATE Overflow past papers, 10 years','Free','Do them subject by subject, then full timed papers in the last 2 months.','GATE']]},
+ {stage:'Stage 4 · After graduation: govt jobs',when:'2028',why:'SSC CGL and IBPS PO need your degree certificate.',steps:[
+  ['r20','Arun Sharma, Quantitative Aptitude (DI focus)','Book','Data interpretation and arithmetic-based DI for IBPS Mains.','IBPS'],
+  ['r21','M.K. Pandey, Analytical Reasoning','Book','Puzzles and seating arrangement, the biggest IBPS section.','IBPS'],
+  ['r22','Kiran SSC CGL past papers','Book','Solve year by year. Every wrong answer goes into Notes.','SSC'],
+  ['r23','Banking awareness: RBI + PIB, every month','Free','Policy rates, circulars, schemes. Make flashcards each week.','IBPS'],
+  ['r24','Full mocks every Sunday','Free or paid series','The single biggest score booster in the last 3 months.','SSC · IBPS']]},
+ {stage:'Stage 5 · UPSC (only if you choose it)',when:'1 to 2 years full-time',why:'Decide this after Stage 3. It needs full-time commitment.',steps:[
+  ['r25','NCERT Class 6 to 12: History, Geography, Polity, Economics, Science','Free','Read every book once before any reference book.','UPSC · CDS'],
+  ['r26','M. Laxmikanth, Indian Polity','Book','The polity reference. Read it twice.','UPSC · CDS'],
+  ['r27','Spectrum (Rajiv Ahir), A Brief History of Modern India','Book','Modern history and the freedom movement.','UPSC'],
+  ['r28','G.C. Leong, Certificate Physical and Human Geography','Book','Physical geography after NCERT Class 11.','UPSC'],
+  ['r29','Ramesh Singh, Indian Economy + Economic Survey','Book + free','Concepts from the book, current data from the Survey.','UPSC · IBPS'],
+  ['r30','Shankar IAS, Environment + Nitin Singhania, Art & Culture','Books','Two high-scoring GS areas.','UPSC'],
+  ['r31','UPSC prelims past papers + CSAT practice','Free · upsc.gov.in','CSAT needs 33% to qualify. Never skip it.','UPSC']]}
+];
+/* Point-by-point parts for each roadmap step, in study order. Grouped by topic, so they match any edition of the book. */
+const UNITS={
+ r1:['Numbers: place value, large numbers, estimation (Class 6)','Whole numbers and integers, operations on integers (Class 6 to 7)','Factors, multiples, divisibility rules, prime numbers (Class 6)','HCF and LCM (Class 6, again in Class 10)','Fractions and decimals (Class 6 to 7)','Ratio, proportion, unitary method (Class 6 to 8)','Percentage, profit and loss, simple interest (Class 7 to 8)','Compound interest (Class 8)','Exponents and powers (Class 7 to 8)','Squares, square roots, cubes, cube roots (Class 8)','Algebraic expressions and identities (Class 7 to 8)','Linear equations in one variable (Class 7 to 8)','Number systems: rational and irrational numbers (Class 9)','Polynomials, factorisation (Class 9 to 10)','Linear equations in two variables, pair of equations (Class 9 to 10)','Quadratic equations (Class 10)','Arithmetic progressions (Class 10)','Lines and angles, parallel lines (Class 6 to 9)','Triangles: properties, congruence (Class 7 to 9)','Similar triangles, Pythagoras theorem (Class 7 to 10)','Quadrilaterals and parallelograms (Class 8 to 9)','Circles: chords, tangents (Class 9 to 10)','Coordinate geometry (Class 9 to 10)','Perimeter and area of 2D shapes, Heron’s formula (Class 6 to 9)','Surface area and volume of solids (Class 8 to 10)','Trigonometry: ratios and identities (Class 10)','Heights and distances (Class 10)','Statistics: mean, median, mode, bar graphs, histograms (Class 6 to 10)','Probability (Class 9 to 10)'],
+ r2:['Number system','Simplification and BODMAS','HCF and LCM','Surds and indices','Percentage','Profit, loss and discount','Simple interest','Compound interest','Ratio and proportion','Partnership','Mixture and alligation','Average','Time and work','Pipes and cisterns','Time, speed and distance','Trains','Boats and streams'],
+ r3:['Verbal: number and letter series','Verbal: analogy','Verbal: classification (odd one out)','Verbal: coding-decoding','Verbal: blood relations','Verbal: direction sense','Verbal: order and ranking','Verbal: syllogism','Verbal: Venn diagrams','Verbal: seating arrangement and puzzles','Verbal: mathematical operations and input-output','Non-verbal: series and analogy','Non-verbal: mirror and water images','Non-verbal: paper folding and cutting','Non-verbal: embedded figures and figure completion','Non-verbal: counting figures','Non-verbal: dice and cubes'],
+ r4:['Parts of speech','Tenses','Subject-verb agreement','Articles and determiners','Prepositions','Conjunctions','Modals','Active and passive voice','Direct and indirect speech','Error spotting practice','Sentence improvement','Synonyms and antonyms','Idioms and phrases','One-word substitution','Spelling','Cloze test','Reading comprehension','Para jumbles'],
+ r5:['Ancient Indian history','Medieval Indian history','Modern Indian history and freedom movement','World geography','Indian geography','Indian polity','Indian economy','Physics','Chemistry','Biology','Computer basics','Static GK: books, awards, sports, firsts, days'],
+ r6:['Basics: input/output, data types, conditions, loops','Functions and pass by value/reference','Basic maths: digits, GCD, primes, divisors','Basic recursion','Basic hashing (counting frequencies)','Sorting I: selection, bubble, insertion','Sorting II: merge sort, quick sort','Arrays: easy problems','Arrays: medium problems','Arrays: hard problems'],
+ r7:['Binary search','Strings','Linked list','Recursion and backtracking','Bit manipulation','Stack and queue','Sliding window and two pointers','Heaps','Greedy','Binary trees','Binary search trees','Graphs: BFS, DFS, topological sort','Graphs: shortest paths, MST','Dynamic programming','Tries','LeetCode Top Interview 150'],
+ r8:['Processes and the process API','CPU scheduling','Address spaces and memory API','Segmentation and paging','TLBs and multi-level page tables','Swapping and page replacement','Threads and locks','Condition variables and semaphores','Concurrency bugs and deadlock','I/O devices and disks','File systems','Crash consistency and journaling'],
+ r9:['ER model','Relational model','Relational algebra and tuple calculus','SQL: joins, grouping, subqueries','Integrity constraints','Functional dependencies','Normal forms: 1NF to BCNF','File organisation and indexing, B and B+ trees','Transactions and ACID','Concurrency control: serialisability, 2PL','Recovery'],
+ r10:['Layering: OSI and TCP/IP','Application layer: HTTP, DNS, email','Transport layer: UDP, TCP, reliable transfer','Flow control and congestion control','Network layer: IPv4, subnetting, CIDR, NAT','Routing: distance vector, link state','Link layer: framing, error detection, MAC, Ethernet','Switching: packet, circuit, virtual circuit','Network security basics'],
+ r14:['Algebraic identities','Linear equations','Lines and angles','Triangles: centres (centroid, incentre, circumcentre, orthocentre)','Congruence and similarity','Circles: chords, tangents, angles','Polygons and quadrilaterals','Mensuration 2D','Mensuration 3D','Trigonometric ratios and identities','Maximum and minimum values','Heights and distances','Coordinate geometry'],
+ r18:['Discrete maths: logic, sets, relations, groups','Discrete maths: graphs, combinatorics, recurrences','Linear algebra and calculus','Probability and statistics','Digital logic','Computer organisation and architecture','Algorithms (CLRS)','Theory of computation (Linz)','Compiler design (Aho and Ullman)','Revise OS, DBMS, networks from Stage 2'],
+ r25:['History: Class 6 to 8 history books','History: Class 9 to 10','History: Class 11 Themes in World History','History: Class 12 Themes in Indian History, parts 1 to 3','Geography: Class 6 to 10','Geography: Class 11 Fundamentals of Physical Geography','Geography: Class 11 India: Physical Environment','Geography: Class 12 Fundamentals of Human Geography','Geography: Class 12 India: People and Economy','Polity: Class 6 to 8 social and political life','Polity: Class 9 to 10 Democratic Politics','Polity: Class 11 Indian Constitution at Work','Polity: Class 12 Politics in India since Independence','Economics: Class 9 to 10','Economics: Class 11 Indian Economic Development','Economics: Class 12 Macroeconomics','Science: Class 6 to 10'],
+ r26:['Historical background and making of the Constitution','Preamble and salient features','Fundamental rights','Directive principles and fundamental duties','Amendment and basic structure','Parliamentary system and federalism','Centre-state relations','Emergency provisions','President and Vice-President','Prime Minister and council of ministers','Parliament','Supreme Court and judiciary','State government','Panchayats and municipalities','Constitutional bodies: EC, UPSC, CAG, Finance Commission','Non-constitutional bodies']
+};
+const RLAB=['Not started','Reading','Done'];
+const openU=new Set();
+function rstate(id){return S.road[id]||(S.road[id]={s:0,d:'',t:''})}
+function renderRoad(){
+  const all=ROAD.flatMap(g=>g.steps);const done=all.filter(x=>rstate(x[0]).s===2).length;
+  const next=all.find(x=>rstate(x[0]).s!==2);
+  $('#roadHead').innerHTML=`<div class="spread"><span><b>${done} of ${all.length} steps done</b></span><span class="mono">${Math.round(done/all.length*100)}%</span></div><div class="bar" style="margin-top:8px"><i style="width:${done/all.length*100}%"></i></div>${next?`<p class="sub" style="margin:10px 0 0">Up next: <b style="color:var(--ink)">${esc(next[1])}</b></p>`:''}`;
+  $('#roadList').innerHTML=ROAD.map(g=>`<div class="stage"><div class="stage-h"><h3>${esc(g.stage)}</h3><span class="mono">${esc(g.when)}</span></div><p class="sub" style="margin:0 0 10px">${esc(g.why)}</p><div class="panel list">${g.steps.map((x,i)=>{const r=rstate(x[0]);
+    return `<div class="step${r.s===2?' done':''}${next&&next[0]===x[0]?' next':''}"><span class="num mono">${pad2(all.indexOf(x)+1)}</span><div style="min-width:0"><div class="w">${esc(x[1])}</div><div class="d">${esc(x[3])}</div><div class="row" style="margin-top:8px;gap:6px"><span class="tag">${esc(x[2])}</span><span class="tag acc">${esc(x[4])}</span><span class="ch"><input type="number" min="0" inputmode="numeric" data-k="d" data-id="${x[0]}" value="${esc(r.d)}" aria-label="Chapters done"> / <input type="number" min="0" inputmode="numeric" data-k="t" data-id="${x[0]}" value="${esc(r.t)}" aria-label="Total chapters"> ch</span></div>${UNITS[x[0]]?`<details class="units" data-u="${x[0]}"${openU.has(x[0])?' open':''}><summary>Study list · ${Object.values(r.u||{}).filter(Boolean).length} of ${UNITS[x[0]].length} parts</summary><ol>${UNITS[x[0]].map((u,k)=>`<li><label><input type="checkbox" data-uk="${x[0]}|${k}" ${(r.u||{})[k]?'checked':''}><span>${esc(u)}</span></label></li>`).join('')}</ol></details>`:''}</div><button class="st" data-r="${x[0]}" data-s="${r.s===0?0:r.s===1?1:3}">${RLAB[r.s]}</button></div>`}).join('')}</div></div>`).join('');
+  $$('#roadList [data-r]').forEach(b=>b.onclick=()=>{const r=rstate(b.dataset.r);r.s=(r.s+1)%3;save();renderRoad()});
+  $$('#roadList details.units').forEach(d=>d.ontoggle=()=>{d.open?openU.add(d.dataset.u):openU.delete(d.dataset.u)});
+  $$('#roadList [data-uk]').forEach(c=>c.onchange=()=>{const [id,k]=c.dataset.uk.split('|');const r=rstate(id);r.u=r.u||{};r.u[k]=c.checked;const n=Object.values(r.u).filter(Boolean).length;r.s=n>=UNITS[id].length?2:n>0?1:0;save();renderRoad()});
+  $$('#roadList .ch input').forEach(i=>i.onchange=()=>{const r=rstate(i.dataset.id);r[i.dataset.k]=i.value;if(r.t&&+r.d>=+r.t&&+r.t>0)r.s=2;else if(+r.d>0&&r.s===0)r.s=1;save();renderRoad()});
+}
+let sylMode='road';
+function sylTab(m){sylMode=m;$$('#sylMode button').forEach(b=>b.setAttribute('aria-selected',b.dataset.m===m));$('#roadView').hidden=m!=='road';$('#topicView').hidden=m!=='topics';$('#fullView').hidden=m!=='full';m==='road'?renderRoad():m==='full'?renderFull():renderSyl()}
+let fsExam='All';
+function renderFull(){
+  const ex=Object.keys(S.syl);const q=($('#fsQ').value||'').trim().toLowerCase();
+  $('#fsEx').innerHTML=['All'].concat(ex).map(e=>`<button role="tab" aria-selected="${e===fsExam}" data-fe="${esc(e)}">${esc(e)}</button>`).join('');
+  $$('#fsEx button').forEach(b=>b.onclick=()=>{fsExam=b.dataset.fe;renderFull()});
+  const enc=encodeURIComponent;let total=0;
+  $('#fsList').innerHTML=ex.filter(e=>fsExam==='All'||e===fsExam).map(e=>{const secs=Object.entries(S.syl[e]);const tag=e.replace(' (my plan)','');
+    const body=secs.map(([sec,l])=>{const items=l.filter(x=>!q||x.n.toLowerCase().includes(q)||sec.toLowerCase().includes(q));if(!items.length)return'';total+=items.length;
+      return `<div class="fs-sec"><h3>${esc(sec)}</h3><div class="panel list">${items.map(x=>`<div class="fs-t"><span class="st-dot" data-s="${x.s}" title="${SLAB[x.s]}"></span><span class="n">${esc(x.n)}</span><span class="lk"><a href="https://www.youtube.com/results?search_query=${enc(x.n+' '+tag+' in English')}" target="_blank" rel="noopener">Learn</a><a href="https://www.google.com/search?q=${enc(x.n+' '+tag+' previous year questions')}" target="_blank" rel="noopener">Past Qs</a></span></div>`).join('')}</div></div>`}).join('');
+    return body?`<div><div class="stage-h"><h3>${esc(e)}</h3><span class="mono">${esc((EXAM_SYL[e]||{}).pattern||'')}</span></div>${body}</div>`:''}).join('')||'<div class="empty">No topic matches that search.</div>';
+}
+function initSyl(){
+  $$('#sylMode button').forEach(b=>b.onclick=()=>sylTab(b.dataset.m));$('#fsQ').oninput=()=>renderFull();
+  $('#sylBack').onclick=()=>{openTrack=null;renderSyl()};
+  const add=()=>{const v=$('#newTopic').value.trim();if(!v||!openTrack)return;S.syl[openExam][openTrack].push({id:uid(),n:v,s:0});$('#newTopic').value='';save();renderSyl()};
+  $('#addTopic').onclick=add;$('#newTopic').onkeydown=e=>{if(e.key==='Enter')add()};
+}
+
+/* ---------- PRACTICE ---------- */
+function ptab(p){$$('#pTabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.p===p));['drill','mcq','cards','notes','quest','ctf'].forEach(k=>$('#p-'+k).hidden=k!==p);if(p==='quest')renderQuest();if(p==='ctf')renderCtf();if(p==='cards')renderCards();if(p==='notes')renderNotes();if(p==='mcq'&&!curQ)nextQ()}
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const FR=[[1,2,'50'],[1,3,'33.33'],[2,3,'66.66'],[1,4,'25'],[3,4,'75'],[1,5,'20'],[1,6,'16.66'],[5,6,'83.33'],[1,7,'14.28'],[1,8,'12.5'],[3,8,'37.5'],[5,8,'62.5'],[7,8,'87.5'],[1,9,'11.11'],[1,11,'9.09'],[1,12,'8.33'],[1,16,'6.25']];
+const DRILLS={
+ sq:['Squares',L=>{const n=rnd(11,Math.min(60,30+10*L));return[n+'\u00b2',n*n]}],
+ cu:['Cubes',L=>{const n=rnd(2,Math.min(30,15+5*L));return[n+'\u00b3',n**3]}],
+ mul:['Multiply by 1 digit',L=>{const a=L>=1?rnd(102,999):rnd(12,99),b=rnd(3,9);return[a+' \u00d7 '+b,a*b]}],
+ mul2:['Multiply 2 digits',L=>{const a=rnd(11,39+20*L),b=rnd(11,29+20*L);return[a+' \u00d7 '+b,a*b]}],
+ pct:['Percent of a number',L=>{const ps=L?[5,8,12.5,15,16,17.5,22.5,37.5,45,62.5,87.5]:[5,10,12.5,15,20,25,30,40,60,75];const p=ps[rnd(0,ps.length-1)],n=rnd(2,40)*40;return[p+'% of '+n,+(p*n/100).toFixed(2)]}],
+ fr:['Fraction to percent',L=>{if(!L){const f=FR[rnd(0,FR.length-1)];return[f[0]+'/'+f[1]+' = ?%',f[2]]}const d=[6,7,8,9,11,12,16][rnd(0,6)],n=rnd(1,d-1);return[n+'/'+d+' = ?%',(n*100/d).toFixed(2)]}],
+ add:['Add numbers',L=>{if(L>=2){const a=rnd(120,989),b=rnd(120,989),c=rnd(120,989);return[a+' + '+b+' + '+c,a+b+c]}const m=L?1000:100;const a=rnd(m+20,m*10-11),b=rnd(m+20,m*10-11);return[a+' + '+b,a+b]}]
+};
+let dr=null;
+function initDrill(){
+  $('#dType').innerHTML=Object.entries(DRILLS).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('');
+  const best=()=>$('#dScore').textContent='Level '+(lvl($('#dType').value)+1)+' · Best: '+(S.drillBest[$('#dType').value]||0);
+  $('#dType').onchange=best;best();
+  const next=()=>{const [q,a]=DRILLS[dr.type][1](lvl(dr.type));dr.a=String(a);$('#dQ').textContent=q;$('#dIn').value=''};
+  $('#dGo').onclick=()=>{
+    dr={type:$('#dType').value,score:0,miss:0,end:Date.now()+60000};$('#dIn').disabled=false;$('#dIn').focus();$('#dGo').disabled=true;$('#dType').disabled=true;next();
+    dr.t=setInterval(()=>{const l=Math.ceil((dr.end-Date.now())/1000);$('#dTime').textContent=Math.max(0,l)+'s';if(l<=0){
+      clearInterval(dr.t);$('#dIn').disabled=true;$('#dGo').disabled=false;$('#dType').disabled=false;
+      const b=S.drillBest[dr.type]||0;if(dr.score>b)S.drillBest[dr.type]=dr.score;
+      let up=false;if(dr.score>=15&&lvl(dr.type)<3){S.drillLvl=S.drillLvl||{};S.drillLvl[dr.type]=lvl(dr.type)+1;up=true}
+      if(dr.score>b){$('#dQ').classList.remove('flash');void $('#dQ').offsetWidth;$('#dQ').classList.add('flash')}
+      logSession('Quant',1,dkey(),'','Drill: '+DRILLS[dr.type][0]+' · '+dr.score+' right');
+      $('#dQ').textContent=dr.score+' right'+(dr.miss?' · '+dr.miss+' missed':'');best();toast(up?'Level up: now level '+(lvl(dr.type)+1):dr.score>b?'New best':'Round done');dr=null;$('#dTime').textContent='60s'}},250);
+  };
+  $('#dIn').onkeydown=e=>{if(e.key!=='Enter'||!dr)return;const v=$('#dIn').value.trim();if(!v)return;
+    const ok=Math.abs(parseFloat(v)-parseFloat(dr.a))<0.02||v===dr.a;
+    if(ok){dr.score++;next()}else{dr.miss++;$('#dIn').value='';$('#dIn').placeholder='Answer was '+dr.a;next()}};
+}
+let curQ=null,answered=false,qOrder=[],qPos=0;
+function allQ(){return QB.concat(paperQs(),(S.myq||[]).map(m=>[m.e,m.q,[m.o[m.a]].concat(m.o.filter((_,j)=>j!==m.a)),(m.x||'')+' ('+m.e+(m.y?' '+m.y:'')+(m.t?', '+m.t:'')+')','mine',m.id]))}
+function nextQ(){
+  const AQ=allQ();const sec=$('#qSec').value;const pool=AQ.map((q,i)=>i).filter(i=>!sec||(sec==='__mine'?AQ[i][4]==='mine':sec==='__papers'?AQ[i][4]==='paper':sec.startsWith('p:')?(AQ[i][5]&&AQ[i][5].pid===sec.slice(2)):AQ[i][0]===sec));
+  if(!pool.length){$('#qText').textContent='No questions here yet. Save a real past-paper question below.';$('#qOpts').innerHTML='';$('#qProg').textContent='';return}
+  if(qPos>=qOrder.length||qOrder.length!==pool.length||qOrder.some(i=>!pool.includes(i))){qOrder=shuffle(pool);qPos=0}
+  const i=qOrder[qPos++];curQ=AQ[i];answered=false;
+  keyMode=false;const opts=curQ[6]?curQ[2].map((o,j)=>[o,false,j]):shuffle(curQ[2].map((o,j)=>[o,j===0]));
+  $('#qText').textContent=curQ[1];$('#qExp').textContent='';
+  $('#qOpts').innerHTML=opts.map((o,j)=>`<button class="opt" data-ok="${o[1]?1:0}" data-j="${o[2]??''}"><kbd>${'ABCD'[j]}</kbd><span>${esc(o[0])}</span></button>`).join('');
+  $$('#qOpts .opt').forEach(b=>b.onclick=()=>pick(b));
+  $('#qProg').textContent=curQ[0]+' · '+qPos+'/'+qOrder.length;renderQacc();
+}
+let keyMode=false;
+function pick(b){
+  if(keyMode){const r=curQ[5];const x=PQ[r.pid][r.i];x.a=+b.dataset.j;storePaper(r.pid);b.classList.add('ok');keyMode=false;answered=true;$('#qExp').textContent='Answer saved from the official key. This question is now fully checked.';return}
+  if(answered)return;
+  if(curQ[6]){b.classList.add('no');keyMode=true;$('#qExp').textContent='This file had no answer key. Check the official key, then tap the correct option to save it.';return}
+  answered=true;const ok=b.dataset.ok==='1';
+  $$('#qOpts .opt').forEach(x=>{if(x.dataset.ok==='1')x.classList.add('ok')});if(!ok)b.classList.add('no');
+  const st=S.qstats[curQ[0]]||(S.qstats[curQ[0]]={r:0,t:0});st.t++;if(ok)st.r++;recArea(curQ[0],ok);save();
+  $('#qExp').textContent=(ok?'Correct. ':'Not quite. ')+curQ[3];renderQacc();
+}
+function renderQacc(){let r=0,t=0;Object.values(S.qstats).forEach(s=>{r+=s.r;t+=s.t});$('#qAcc').textContent=t?Math.round(r/t*100)+'% of '+t+' answered':'No answers yet'}
+function initMcq(){
+  $('#ppGo').onclick=importPaper;$('#ppStop').onclick=()=>paperStop&&paperStop.abort();renderPapers();
+  $('#mqAdd').onclick=()=>{const o=[0,1,2,3].map(i=>$('#mqO'+i).value.trim());const q=$('#mqQ').value.trim();
+    if(!q||o.some(x=>!x))return toast('Fill the question and all four options');
+    (S.myq||(S.myq=[])).push({id:uid(),e:$('#mqE').value,y:$('#mqY').value.trim(),t:$('#mqT').value.trim(),q,o,a:+$('#mqA').value,x:$('#mqX').value.trim()});
+    ['#mqQ','#mqO0','#mqO1','#mqO2','#mqO3','#mqX'].forEach(i=>$(i).value='');save();fillSubjects();toast('Question saved')};
+  $('#qSec').onchange=()=>{qOrder=[];nextQ()};$('#qNext').onclick=nextQ;
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#ov').hidden){if(bus)busExit();else if(!boss)closeOv();return}if($('#p-mcq').hidden||cur!=='prac'||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;const k='abcd'.indexOf(e.key.toLowerCase());if(k>=0){const b=$$('#qOpts .opt')[k];b&&pick(b)}if(e.key==='Enter'&&answered)nextQ()});
+}
+let curCard=null;
+function renderCards(){
+  const box=[1,2,3,4,5].map(n=>S.cards.filter(c=>c.box===n).length);
+  $('#boxes').innerHTML=box.map((n,i)=>`<div><b>${n}</b>Box ${i+1}</div>`).join('');
+  const due=dueCards();curCard=due[0]||null;
+  $('#cardBack').hidden=true;$('#cAgain').disabled=$('#cGood').disabled=true;
+  if(curCard){$('#cardDeck').textContent=curCard.d;$('#cardFront').textContent=curCard.f;$('#cardBack').textContent=curCard.b;$('#cardInfo').textContent=due.length+' due · tap card to reveal'}
+  else{$('#cardDeck').textContent='Done';$('#cardFront').textContent='All caught up';$('#cardBack').textContent='';$('#cardInfo').textContent='Next cards come back on their review day.'}
+}
+function initCards(){
+  const flip=()=>{if(!curCard)return;$('#cardBack').hidden=!$('#cardBack').hidden;$('#cAgain').disabled=$('#cGood').disabled=false};
+  $('#card').onclick=flip;$('#card').onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();flip()}};
+  const grade=g=>{if(!curCard)return;curCard.box=g?Math.min(5,curCard.box+1):1;curCard.due=dkey(addDays(new Date(),g?INTERVAL[curCard.box]:0));
+    if(!g){S.cards=S.cards.filter(c=>c!==curCard);S.cards.push(curCard)}save();renderCards();renderToday()};
+  $('#cAgain').onclick=()=>grade(false);$('#cGood').onclick=()=>grade(true);
+  $('#cfAdd').onclick=()=>{const f=$('#cfF').value.trim(),b=$('#cfB').value.trim();if(!f||!b)return toast('Fill front and back');S.cards.push({id:uid(),d:$('#cfD').value,f,b,box:1,due:dkey()});$('#cfF').value=$('#cfB').value='';save();renderCards();toast('Card added')};
+}
+let curNote=null;
+function renderNotes(){
+  const l=[...S.notes].sort((a,b)=>b.at-a.at);
+  $('#noteList').innerHTML=l.map(n=>`<div class="note" data-id="${n.id}" tabindex="0"><b>${esc(n.t||'Untitled')}</b><span class="tag">${esc(n.s)}</span><span class="x">${esc(n.b.split('\n')[0])}</span></div>`).join('')||'<div class="empty">No notes yet.</div>';
+  $$('#noteList .note').forEach(el=>{const open=()=>{const n=S.notes.find(x=>x.id===el.dataset.id);curNote=n.id;$('#nTitle').value=n.t;$('#nSub').value=n.s;$('#nBody').value=n.b;$('#nDel').hidden=false};el.onclick=open;el.onkeydown=e=>{if(e.key==='Enter')open()}});
+}
+function initNotes(){
+  $('#nRead').hidden=typeof speechSynthesis==='undefined';
+  $('#nRead').onclick=()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(($('#nTitle').value+'. '+$('#nBody').value).slice(0,4000));const v=speechSynthesis.getVoices().find(v=>/en-IN/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){toast('Read aloud is not available here')}};
+  const clear=()=>{curNote=null;$('#nTitle').value=$('#nBody').value='';$('#nDel').hidden=true};
+  $('#nNew').onclick=clear;
+  $('#nSave').onclick=()=>{const t=$('#nTitle').value.trim(),b=$('#nBody').value;if(!t&&!b.trim())return;
+    if(curNote){const n=S.notes.find(x=>x.id===curNote);Object.assign(n,{t,b,s:$('#nSub').value,at:Date.now()})}
+    else{const n={id:uid(),t,b,s:$('#nSub').value,at:Date.now()};S.notes.push(n);curNote=n.id;$('#nDel').hidden=false}
+    save();renderNotes();toast('Note saved')};
+  let armed=false;$('#nDel').onclick=()=>{if(!armed){armed=true;$('#nDel').textContent='Tap again to delete';setTimeout(()=>{armed=false;$('#nDel').textContent='Delete'},2500);return}
+    S.notes=S.notes.filter(n=>n.id!==curNote);armed=false;$('#nDel').textContent='Delete';clear();save();renderNotes()};
+}
+
+/* ---------- PROGRESS ---------- */
+function renderProg(){
+  const m=minsByDay();const tot=S.sessions.reduce((a,s)=>a+s.m,0);
+  $('#sTotal').textContent=(tot/60).toFixed(1)+'h';
+  let t30=0;for(let i=0;i<30;i++)t30+=m[dkey(addDays(new Date(),-i))]||0;
+  $('#sAvg').textContent=fmtMin(Math.round(t30/30));renderDebrief();renderRadar();$('#sBest').textContent=streaks().best;
+  let r=0,t=0;Object.values(S.qstats).forEach(s=>{r+=s.r;t+=s.t});$('#sQacc').textContent=t?Math.round(r/t*100)+'%':'–';
+  // heatmap: 20 weeks ending this week, columns start Monday
+  const end=new Date();const startOff=(end.getDay()+6)%7;let start=addDays(end,-startOff-19*7);
+  let cells='';for(let i=0;i<140;i++){const d=addDays(start,i);const k=dkey(d);const v=m[k]||0;const future=d>end;
+    const l=future?-1:v===0?0:v<S.target*.34?1:v<S.target*.67?2:v<S.target?3:4;
+    cells+=future?'<i style="visibility:hidden"></i>':`<i data-l="${l}" title="${k}: ${fmtMin(v)}"></i>`}
+  $('#heat').innerHTML=cells;
+  const by={};const cut=dkey(addDays(new Date(),-29));S.sessions.filter(s=>s.d>=cut).forEach(s=>by[s.sub]=(by[s.sub]||0)+s.m);
+  const mx=Math.max(1,...Object.values(by));
+  $('#bySub').innerHTML=SUBJECTS.map(s=>`<div class="hbar"><span>${esc(s.replace(' & Current Affairs',' & CA').replace(' & Placement',''))}</span><span class="bar"><i style="width:${(by[s]||0)/mx*100}%"></i></span><span class="mono" style="text-align:right">${fmtMin(by[s]||0)}</span></div>`).join('');
+  $('#bySyl').innerHTML=Object.keys(S.syl).map(k=>{const p=pct(examTopics(k));return `<div class="hbar"><span>${esc(k.replace(' (my plan)','').replace(' Prelims',''))}</span><span class="bar"><i style="width:${p}%"></i></span><span class="mono" style="text-align:right">${p}%</span></div>`}).join('');
+  renderMocks();
+}
+function renderMocks(){
+  const l=[...S.mocks].sort((a,b)=>a.d.localeCompare(b.d));
+  $('#mockTable').innerHTML=l.length?'<tr><th>Date</th><th>Exam</th><th class="num">Score</th><th class="num">%</th><th></th></tr>'+[...l].reverse().map(k=>`<tr><td class="mono">${k.d}</td><td>${esc(k.e)}</td><td class="num">${k.s}/${k.x}</td><td class="num">${Math.round(k.s/k.x*100)}</td><td><button class="btn ghost sm" data-mdel="${k.id}" aria-label="Delete mock">×</button></td></tr>`).join(''):'<tr><td class="empty">No mocks logged. Take one every Sunday and log it here.</td></tr>';
+  $$('[data-mdel]').forEach(b=>b.onclick=()=>{S.mocks=S.mocks.filter(k=>k.id!==b.dataset.mdel);save();renderMocks()});
+  const W=640,H=170,P=30;
+  if(l.length<2){$('#mockChart').innerHTML='<p class="sub" style="margin:0">Your score trend appears after two mocks.</p>';return}
+  const pts=l.slice(-20).map((k,i,a)=>[P+i*(W-P-12)/(a.length-1),12+(H-12-22)*(1-k.s/k.x),Math.round(k.s/k.x*100),k]);
+  const grid=[0,25,50,75,100].map(v=>{const y=12+(H-34)*(1-v/100);return `<line x1="${P}" x2="${W-12}" y1="${y}" y2="${y}" stroke="var(--line)"/><text x="${P-6}" y="${y+4}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="IBM Plex Mono,monospace">${v}</text>`}).join('');
+  const path=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)).join('');
+  const area=path+`L${pts.at(-1)[0]},${H-22}L${pts[0][0]},${H-22}Z`;
+  const last=pts.at(-1);
+  $('#mockChart').innerHTML=`<div class="scroll"><svg viewBox="0 0 ${W} ${H}" width="100%" style="min-width:320px;display:block" role="img" aria-label="Mock score percent over time">${grid}<path d="${area}" fill="var(--accent-soft)"/><path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2"/>${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="2.5" fill="var(--accent)"><title>${esc(p[3].e)} ${p[3].d}: ${p[2]}%</title></circle>`).join('')}<circle cx="${last[0]}" cy="${last[1]}" r="5" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="${Math.min(last[0],W-40)}" y="${Math.max(last[1]-10,12)}" font-size="12" fill="var(--ink)" font-family="IBM Plex Mono,monospace" text-anchor="middle">${last[2]}%</text></svg></div>`;
+}
+function initProg(){
+  $('#mkDate').value=dkey();
+  $('#mkAdd').onclick=()=>{const s=parseFloat($('#mkScore').value),x=parseFloat($('#mkMax').value);if(isNaN(s)||!(x>0)||s>x)return toast('Check score and out-of');
+    S.mocks.push({id:uid(),e:$('#mkExam').value,s,x,d:$('#mkDate').value||dkey()});$('#mkScore').value='';save();renderMocks();toast('Mock logged')};
+}
+
+/* ---------- LIBRARY ---------- */
+const LIB=[
+ ['Official','SSC official site','https://ssc.gov.in','Notifications, syllabus PDFs, exam calendar and answer keys for SSC CGL.','Official'],
+ ['Official','IBPS official site','https://www.ibps.in','CRP PO/MT notifications, exam pattern and dates.','Official'],
+ ['Official','UPSC previous question papers','https://upsc.gov.in/examinations/previous-question-papers','Real past papers for CSE prelims and CDS. Practise these before any coaching material.','Official'],
+ ['Official','UPSC official site','https://upsc.gov.in','CDS and Civil Services notifications with the full syllabus.','Official'],
+ ['Official','AFCAT (Indian Air Force)','https://afcat.cdac.in','AFCAT notification, syllabus, EKT and sample tests.','Official'],
+ ['Official','Join Indian Army','https://joinindianarmy.nic.in','TGC (technical graduate) and other officer entries.','Official'],
+ ['Official','Join Indian Navy','https://www.joinindiannavy.gov.in','Navy officer entries, including tech branches.','Official'],
+ ['Aptitude','NCERT textbooks','https://ncert.nic.in/textbook.php','Class 6 to 10 maths for arithmetic and geometry basics. Class 6 to 12 for GK and UPSC.','Official'],
+ ['Aptitude','IndiaBIX','https://www.indiabix.com','Topic-wise aptitude, reasoning and verbal questions with solutions.','FMHY'],
+ ['Aptitude','Examveda','https://www.examveda.com','Free MCQ practice for competitive exams.','FMHY'],
+ ['Aptitude','FreeOnlineTest','https://www.freeonlinetest.in','Free mock tests for Indian exams.','FMHY'],
+ ['Aptitude','Khan Academy','https://www.khanacademy.org','Arithmetic, algebra, geometry, statistics and probability from zero.','Free'],
+ ['English','BBC Learning English','https://www.bbc.co.uk/learningenglish/','Grammar, vocabulary and short daily lessons. Good on the bus.','FMHY'],
+ ['English','engVid','https://www.engvid.com','Free video lessons on grammar and vocabulary.','FMHY'],
+ ['English','Write & Improve','https://writeandimprove.com','Free feedback on your writing. Useful for the IBPS descriptive paper.','FMHY'],
+ ['English','ManyThings','https://www.manythings.org','Vocabulary games, quizzes and listening.','FMHY'],
+ ['GK & CA','PIB (Press Information Bureau)','https://pib.gov.in','Official government press releases. The source behind most current affairs questions.','Official'],
+ ['GK & CA','RBI','https://www.rbi.org.in','Monetary policy, circulars and press releases for IBPS banking awareness.','Official'],
+ ['GK & CA','Our World in Data','https://ourworldindata.org','Charts on economy, environment and development for UPSC.','FMHY'],
+ ['GK & CA','NPTEL','https://nptel.ac.in','Free IIT courses, including economics, history and every CSE subject.','Official'],
+ ['GK & CA','SWAYAM','https://swayam.gov.in','Government\u2019s free course platform.','Official'],
+ ['Cyber','TryHackMe','https://tryhackme.com','Guided hacking labs in the browser. Start with the Pre Security path.','FMHY'],
+ ['Cyber','PortSwigger Web Security Academy','https://portswigger.net/web-security','Free labs for every OWASP web bug. The best free web security course.','FMHY'],
+ ['Cyber','OverTheWire wargames','https://overthewire.org/wargames/','Start with Bandit to learn Linux through challenges.','FMHY'],
+ ['Cyber','OWASP Cheat Sheet Series','https://cheatsheetseries.owasp.org','How to prevent each class of vulnerability. Great for interviews.','FMHY'],
+ ['Cyber','OWASP Juice Shop','https://owasp.org/projects/juice-shop','A deliberately vulnerable app to practise on legally.','FMHY'],
+ ['Cyber','CryptoHack','https://cryptohack.org','Learn cryptography by solving challenges.','FMHY'],
+ ['Cyber','pwn.college','https://pwn.college','Free course from ASU on Linux, exploitation and reverse engineering.','FMHY'],
+ ['Cyber','Professor Messer','https://www.professormesser.com','Free full video courses for CompTIA Security+ and Network+.','FMHY'],
+ ['Cyber','Cisco Skills for All','https://www.netacad.com','Free networking and cybersecurity courses with certificates.','FMHY'],
+ ['Cyber','CTFtime','https://ctftime.org','Calendar of CTF competitions. Join with your college team.','FMHY'],
+ ['Cyber','ISEA (MeitY)','https://isea.gov.in','Government information security education and awareness programme.','Official'],
+ ['GATE','GATE 2027 official site (IIT Madras)','https://gate2027.iitm.ac.in','Official syllabus PDF, information brochure, dates and mock test.','Official'],
+ ['GATE','GATE Overflow','https://gateoverflow.in','Every GATE CS previous year question with discussed solutions.','Free'],
+ ['GATE','NPTEL GATE courses','https://nptel.ac.in','Free IIT lectures for OS, DBMS, TOC, compilers, networks and algorithms.','Official'],
+ ['GATE','MIT OpenCourseWare','https://ocw.mit.edu','Full MIT courses for algorithms (6.006), discrete maths and linear algebra.','FMHY'],
+ ['Placement','LeetCode','https://leetcode.com','Coding interview practice. Do the Top Interview 150 list.','FMHY'],
+ ['Placement','NeetCode','https://neetcode.io','The NeetCode 150 list with video solutions, grouped by pattern.','FMHY'],
+ ['Placement','CSES Problem Set','https://cses.fi/problemset/','300 classic algorithm problems.','FMHY'],
+ ['Placement','VisuAlgo','https://visualgo.net','See how data structures and algorithms work, step by step.','FMHY'],
+ ['Placement','CS50','https://cs50.harvard.edu/x/','Harvard\u2019s intro to computer science, free.','FMHY'],
+ ['Placement','The Missing Semester (MIT)','https://missing.csail.mit.edu','Shell, Git, Vim and tools you need in labs and jobs.','FMHY'],
+ ['Placement','SQLBolt','https://sqlbolt.com','Interactive SQL lessons for DBMS rounds.','FMHY'],
+ ['Placement','roadmap.sh','https://roadmap.sh','Step-by-step roadmaps, including a cyber security one.','FMHY'],
+ ['Placement','freeCodeCamp','https://www.freecodecamp.org','Free programming courses and certificates.','FMHY'],
+ ['Free books','Operating Systems: Three Easy Pieces','https://pages.cs.wisc.edu/~remzi/OSTEP/','The authors give the full OS textbook away free. Covers GATE OS completely.','Free'],
+ ['Free books','Computer Networks: A Systems Approach','https://book.systemsapproach.org','Peterson and Davie’s networking textbook, free and open.','Free'],
+ ['Free books','Algorithms by Jeff Erickson','https://jeffe.cs.illinois.edu/teaching/algorithms/','Free algorithms textbook from UIUC.','Free'],
+ ['Free books','Open Data Structures','https://opendatastructures.org','Open textbook on data structures, with code.','Free'],
+ ['Free books','Crafting Interpreters','https://craftinginterpreters.com','Free book on how compilers and interpreters work.','FMHY'],
+ ['Free books','Security Engineering (Ross Anderson)','https://www.cl.cam.ac.uk/~rja14/book.html','A classic security book. The author shares chapters free.','Free'],
+ ['Free books','The Linux Command Line','https://linuxcommand.org/tlcl.php','William Shotts’ full book, free PDF from the author.','Free'],
+ ['Free books','Automate the Boring Stuff with Python','https://automatetheboringstuff.com','Full Python book, free to read online.','FMHY'],
+ ['Free books','Free Programming Books','https://ebookfoundation.github.io/free-programming-books/','Huge list of legally free programming and CS books.','FMHY'],
+ ['Free books','NIOS study material','https://nios.ac.in','Government course books for history, geography, economics, polity. Good for GK.','Official'],
+ ['Free books','Constitution of India (official text)','https://legislative.gov.in/constitution-of-india/','Read the actual articles for polity.','Official'],
+ ['Free books','Union Budget and Economic Survey','https://www.indiabudget.gov.in','Official documents behind economy questions in IBPS and UPSC.','Official'],
+ ['Tools','Anki','https://apps.ankiweb.net','Flashcard app with shared decks. AnkiDroid is free on Android.','FMHY']
+];
+let libCat='Official';
+function renderLib(){
+  const cats=[...new Set(LIB.map(r=>r[0]))];
+  $('#libCats').innerHTML=cats.map(c=>`<button role="tab" aria-selected="${c===libCat}" data-c="${esc(c)}">${esc(c)} <span class="mono">${LIB.filter(r=>r[0]===c).length}</span></button>`).join('');
+  $$('#libCats button').forEach(b=>b.onclick=()=>{libCat=b.dataset.c;renderLib()});
+  $('#libList').innerHTML=LIB.filter(r=>r[0]===libCat).map(r=>`<div class="res"><a href="${r[2]}" target="_blank" rel="noopener">${esc(r[1])}</a><span class="tag${r[4]==='Official'?' acc':''}">${r[4]}</span><span class="d">${esc(r[3])} <span class="mono">${esc(r[2].replace(/^https:\/\/(www\.)?/,'').replace(/\/$/,''))}</span></span></div>`).join('');
+}
+
+/* ---------- SETTINGS ---------- */
+function applyTheme(){const t=S.theme;if(t==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',t);$('#themeBtn').textContent='Theme: '+t}
+function renderSet(){
+  $('#setName').value=S.name;$('#setTarget').value=S.target;$('#setLeave').value=S.leave;$('#setWhy').value=S.why||'';
+  $('#examEdit').innerHTML=S.exams.map(e=>`<div class="row" style="padding:10px 14px" data-ex="${e.id}"><input type="text" value="${esc(e.name)}" data-k="name" style="flex:2 1 160px" aria-label="Exam name"><input type="date" value="${e.date}" data-k="date" style="flex:1 1 140px" aria-label="Exam date"><button class="btn ghost sm" data-k="del" aria-label="Remove exam">Remove</button></div>`).join('');
+  $$('#examEdit [data-ex]').forEach(r=>{const e=S.exams.find(x=>x.id===r.dataset.ex);
+    r.querySelectorAll('input').forEach(i=>i.onchange=()=>{e[i.dataset.k]=i.value;if(i.dataset.k==='date')e.est=false;save();fillSubjects()});
+    r.querySelector('[data-k=del]').onclick=()=>{S.exams=S.exams.filter(x=>x!==e);save();renderSet();fillSubjects()}});
+  setSync($('#sync').textContent);
+}
+function initSet(){
+  $('#setName').onchange=e=>{S.name=e.target.value.trim();save()};
+  $('#setTarget').onchange=e=>{const v=+e.target.value;if(v>=15){S.target=v;save()}};
+  $('#setLeave').onchange=e=>{S.leave=e.target.value;save()};
+  $('#setWhy').onchange=e=>{S.why=e.target.value.trim();save()};
+  $('#exAdd').onclick=()=>{S.exams.push({id:uid(),name:'New exam',date:dkey(addDays(new Date(),90)),est:false});save();renderSet();fillSubjects()};
+  $('#themeBtn').onclick=()=>{S.theme={auto:'light',light:'dark',dark:'auto'}[S.theme];applyTheme();save()};
+  $('#exportBtn').onclick=()=>{const t=JSON.stringify(S);$('#backup').value=t;
+    try{navigator.clipboard.writeText(t).then(()=>toast('Backup copied'),()=>{$('#backup').select();toast('Select all and copy')})}catch(e){$('#backup').select();toast('Select all and copy')}};
+  let armed=false;$('#importBtn').onclick=()=>{let d;try{d=JSON.parse($('#backup').value)}catch(e){return toast('That is not a valid backup')}
+    d=migrate(d);if(!d)return toast('That is not a valid backup');
+    if(!armed){armed=true;$('#importBtn').textContent='Tap again to replace all data';setTimeout(()=>{armed=false;$('#importBtn').textContent='Restore from backup'},3000);return}
+    S=d;save();renderAll();toast('Restored');$('#importBtn').textContent='Restore from backup';armed=false};
+}
+
+function render(v){({today:renderToday,focus:()=>{syncTimerUI();renderSessions()},syl:()=>sylTab(sylMode),prac:()=>{},lib:renderLib,prog:renderProg,set:renderSet})[v]()}
+function renderAll(){applyTheme();fillSubjects();syncTimerUI();render(cur);if(!$('#p-cards').hidden)renderCards()}
+
+/* ================= ENGAGEMENT LAYER ================= */
+/* ---- 1. rank ladder ---- */
+const RANKS=[[0,'Cadet'],[10,'Second Lieutenant'],[30,'Lieutenant'],[75,'Captain'],[150,'Major'],[300,'Lieutenant Colonel'],[500,'Colonel'],[800,'Brigadier'],[1200,'Major General']];
+const totalHours=()=>S.sessions.reduce((a,s)=>a+s.m,0)/60;
+function rankOf(h){let i=0;RANKS.forEach((r,j)=>{if(h>=r[0])i=j});return i}
+function insignia(i){
+  const star=(x,y,r)=>{let p='';for(let k=0;k<10;k++){const a=Math.PI/5*k-Math.PI/2,rr=k%2?r*.45:r;p+=(k?'L':'M')+(x+rr*Math.cos(a)).toFixed(1)+','+(y+rr*Math.sin(a)).toFixed(1)}return `<path d="${p}Z" fill="var(--accent)"/>`};
+  const emb=(y)=>`<circle cx="32" cy="${y}" r="9" fill="none" stroke="var(--accent)" stroke-width="2.4"/><circle cx="32" cy="${y}" r="3" fill="var(--accent)"/>`;
+  const L=[
+    `<path d="M16 30 L32 20 L48 30 M16 40 L32 30 L48 40" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linejoin="round"/>`,
+    star(32,32,11),star(32,20,9)+star(32,44,9),star(32,14,8)+star(32,32,8)+star(32,50,8),
+    emb(32),emb(42)+star(32,17,8),emb(46)+star(32,14,7)+star(32,30,7),star(20,48,7)+star(44,48,7)+emb(22),
+    `<path d="M18 46 L46 18 M18 18 L46 46" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round"/>`+star(32,14,7)];
+  return `<svg viewBox="0 0 64 64" width="56" height="56" aria-hidden="true"><rect x="3" y="3" width="58" height="58" rx="3" fill="var(--accent-soft)"/>${L[i]}</svg>`}
+function renderRank(){
+  const h=totalHours(),i=rankOf(h),nx=RANKS[i+1];
+  $('#rankCard').innerHTML=`<div class="rank">${insignia(i)}<div style="min-width:0;flex:1"><span class="tag">Rank</span><div class="rk">${RANKS[i][1]}</div>
+   ${nx?`<div class="bar" style="margin-top:8px"><i style="width:${((h-RANKS[i][0])/(nx[0]-RANKS[i][0])*100).toFixed(1)}%"></i></div><div class="sub" style="margin:6px 0 0;font-size:12.5px">${(nx[0]-h).toFixed(1)} h to ${nx[1]}</div>`:'<div class="sub" style="margin:6px 0 0">Top rank reached.</div>'}</div></div>`;
+}
+/* ---- 3. streak shield: one missed day per 7 is forgiven ---- */
+function runBack(days,start){let d=new Date(start),n=0,lastMiss=null,used=0;
+  while(true){const k=dkey(d);if(days.has(k)){n++}else{if(lastMiss&&Math.round((lastMiss-d)/864e5)<7)break;if(!days.has(dkey(addDays(d,-1))))break;lastMiss=new Date(d);if(Math.round((parseKey(dkey(new Date(start)))-d)/864e5)<7)used++}d=addDays(d,-1);if(n>5000)break}
+  return {n,used}}
+streaks=function(){const m=minsByDay();const days=new Set(Object.keys(m).filter(k=>m[k]>0));
+  let s=new Date();if(!days.has(dkey(s)))s=addDays(s,-1);const c=runBack(days,s);
+  let best=0;days.forEach(k=>{const r=runBack(days,parseKey(k));if(r.n>best)best=r.n});
+  return {cur:c.n,best,shield:c.used}};
+/* ---- 5. weak-spot radar data ---- */
+const AREAS=['Quant','Reasoning','English','GK','CS core','Cyber'];
+const AREA_SUBJ={Quant:'Quant',Reasoning:'Reasoning',English:'English',GK:'GK & Current Affairs','CS core':'Cyber & Placement',Cyber:'Cyber & Placement'};
+function areaOf(sec){const s=String(sec).toLowerCase();
+  if(/cyber|security/.test(s))return'Cyber';
+  if(/quant|numer|math|arith|data an|interpretation/.test(s))return'Quant';
+  if(/english|verbal|comprehension|descriptive/.test(s))return'English';
+  if(/reason|intelligence|analytical|csat|mental|general aptitude/.test(s))return'Reasoning';
+  if(/operating|database|network|algorithm|programming|digital|computer|compiler|theory|dsa|coding|placement|cs core|ekt/.test(s))return'CS core';
+  if(/gk|aware|knowledge|gs paper|current|defence|polity|history|geograph/.test(s))return'GK';return null}
+function recArea(sec,ok){const a=areaOf(sec);const t=dkey();S.qday=S.qday||{};S.qday[t]=(S.qday[t]||0)+1;if(!a)return;S.area=S.area||{};const x=S.area[a]||(S.area[a]={r:0,t:0});x.t++;if(ok)x.r++}
+const acc=a=>{const x=(S.area||{})[a];return x&&x.t?x.r/x.t:null};
+function weakArea(){const c=['Quant','Reasoning','English','GK'].filter(a=>((S.area||{})[a]||{}).t>=10);if(c.length<2)return null;return c.sort((a,b)=>acc(a)-acc(b))[0]}
+function renderRadar(){
+  const W=300,C=150,R=105;const pts=AREAS.map((a,i)=>{const ang=-Math.PI/2+i*Math.PI*2/6;return{a,ang,v:acc(a)}});
+  const P=(r,ang)=>(C+r*Math.cos(ang)).toFixed(1)+','+(C+r*Math.sin(ang)).toFixed(1);
+  const rings=[.25,.5,.75,1].map(f=>`<polygon points="${pts.map(p=>P(R*f,p.ang)).join(' ')}" fill="none" stroke="var(--line)"/>`).join('');
+  const axes=pts.map(p=>`<line x1="${C}" y1="${C}" x2="${P(R,p.ang).split(',')[0]}" y2="${P(R,p.ang).split(',')[1]}" stroke="var(--line)"/>`).join('');
+  const any=pts.some(p=>p.v!=null);
+  const shape=any?`<polygon points="${pts.map(p=>P(R*(p.v??0),p.ang)).join(' ')}" fill="var(--accent)" fill-opacity=".18" stroke="var(--accent)" stroke-width="2"/>`+pts.filter(p=>p.v!=null).map(p=>`<circle cx="${P(R*p.v,p.ang).split(',')[0]}" cy="${P(R*p.v,p.ang).split(',')[1]}" r="3.5" fill="var(--accent)"/>`).join(''):'';
+  const labels=pts.map(p=>{const [x,y]=P(R+24,p.ang).split(',').map(Number);return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="11.5" fill="var(--ink)" font-family="IBM Plex Sans,sans-serif">${p.a}</text><text x="${x}" y="${y+13}" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="IBM Plex Mono,monospace">${p.v==null?'–':Math.round(p.v*100)+'%'}</text>`}).join('');
+  const w=weakArea();
+  $('#radar').innerHTML=`<svg viewBox="-20 -10 ${W+40} ${W+20}" width="100%" style="max-width:360px;display:block;margin:0 auto" role="img" aria-label="Accuracy by area">${rings}${axes}${shape}${labels}</svg><p class="sub" style="margin:4px 0 0;text-align:center">${w?`Weakest: <b style="color:var(--ink)">${w}</b>. It now sets your weekday Block A.`:'Answer 10+ questions in two areas to see your weak spot.'}</p>`}
+/* ---- 2. mission briefing ---- */
+function renderMission(){
+  const t=dkey(),m=minsByDay()[t]||0,due=dueCards().length,q=(S.qday||{})[t]||0,flag=!!(S.flags||{})[t];
+  const sl=slots();const blockA=(sl.find(x=>x[0].startsWith('Block A'))||[])[1]||'Full mock test';const w=weakArea();
+  const ms=[[`Focus ${fmtMin(S.target)}`,m>=S.target,fmtMin(m)+' done'],['Clear due flashcards',due===0,due+' left'],['Answer 10 questions',q>=10,q+'/10'],['Capture today’s flag',flag,flag?'captured':'in Practice']];
+  const done=ms.filter(x=>x[1]).length;
+  $('#missionCard').innerHTML=`<div class="spread"><span class="tag${done===4?' acc':''}">${done===4?'Mission complete':'Mission briefing'}</span><span class="mono" style="font-size:12px;color:var(--muted)">${done}/4</span></div>
+   <div class="obj">Objective: ${esc(blockA)}</div><div class="sub" style="margin:0 0 10px;font-size:13px">${w?`Intel: weakest area is ${w} (${Math.round(acc(w)*100)}%). `:''}${due} cards due.</div>
+   <div class="ms">${ms.map(x=>`<div class="${x[1]?'ok':''}"><i></i><span>${x[0]}</span><span class="mono">${x[2]}</span></div>`).join('')}</div>`}
+/* ---- 11/12. banners: Sunday debrief + future letter ---- */
+function renderBanner(){
+  const m=minsByDay();const y1=m[dkey(addDays(new Date(),-1))]||0,y2=m[dkey(addDays(new Date(),-2))]||0;
+  let h='';
+  if(S.why&&S.sessions.length&&!y1&&!y2)h+=`<div class="banner"><span class="tag acc">Your why</span><p>${esc(S.why)}</p><button class="btn sm primary" data-act2="focus">Start 25 minutes now</button></div>`;
+  if(new Date().getDay()===0)h+=`<div class="banner"><span class="tag">Sunday</span><p>Your weekly debrief is ready.</p><button class="btn sm" data-act2="prog">Open debrief</button></div>`;
+  $('#banner').innerHTML=h;$('#banner').hidden=!h;$$('#banner [data-act2]').forEach(b=>b.onclick=()=>{if(b.dataset.act2==='focus'){go('focus');mode=25;syncTimerUI()}else go('prog')})}
+function renderDebrief(){
+  const m=minsByDay();const now=new Date();const dow=(now.getDay()+6)%7;let tw=0,lw=0,best=null,qw=0;
+  for(let i=0;i<=dow;i++){const k=dkey(addDays(now,-i));tw+=m[k]||0;qw+=(S.qday||{})[k]||0;if(!best||(m[k]||0)>(m[best]||0))best=k}
+  for(let i=7;i<=7+dow;i++)lw+=m[dkey(addDays(now,-i))]||0;
+  const mk=[...S.mocks].sort((a,b)=>a.d.localeCompare(b.d)).slice(-2);const trend=mk.length===2?Math.round(mk[1].s/mk[1].x*100-mk[0].s/mk[0].x*100):null;
+  const w=weakArea();const diff=tw-lw;
+  const focus=w?`Give ${w} two extra blocks next week.`:tw<S.target*3?'Protect Block A every weekday next week.':'Keep the rhythm. Add one full mock.';
+  $('#debrief').innerHTML=`<div class="spread"><h2 style="margin:0">Weekly debrief</h2><span class="mono" style="font-size:12px;color:var(--muted)">Mon to today</span></div>
+  <div class="deb"><div><b>${fmtMin(tw)}</b><span>${lw?(diff>=0?'+':'')+fmtMin(Math.abs(diff)).replace(/^/,diff<0?'-':'')+' vs last week':'studied'}</span></div><div><b>${best&&m[best]?parseKey(best).toLocaleDateString('en-IN',{weekday:'short'}):'–'}</b><span>best day</span></div><div><b>${qw}</b><span>questions</span></div><div><b>${trend==null?'–':(trend>0?'+':'')+trend+'%'}</b><span>mock trend</span></div></div>
+  <p style="margin:12px 0 0"><b>Next week:</b> ${esc(focus)}</p>`}
+/* ---- 4. boss battles ---- */
+let boss=null;
+function bossPool(exam,sec){const a=areaOf(sec);return allQ().filter(q=>!q[6]&&((q[4]==='paper'&&String(q[0]).startsWith(exam+' · '+sec))||(q[4]!=='paper'&&a&&areaOf(q[0])===a)))}
+function bossBtn(exam,sec){const n=bossPool(exam,sec).length;const b=(S.badges||{})[exam+'|'+sec];
+  return `<div class="row" style="margin-top:4px"><button class="btn primary sm" id="bossGo" ${n<5?'disabled':''}>Boss battle: ${Math.min(15,n)} questions, timed</button><span class="sub" style="margin:0">${b?'Cleared on '+b+'. Fight again to stay sharp.':n<5?'Import a paper for this exam to unlock.':'Score 70% to earn the section badge.'}</span></div>`}
+function startBoss(exam,sec){const pool=shuffle(bossPool(exam,sec)).slice(0,15);boss={exam,sec,qs:pool,i:0,r:0,end:Date.now()+pool.length*60000};openOv();bossQ();boss.t=setInterval(()=>{const l=Math.max(0,Math.ceil((boss.end-Date.now())/1000));$('#bossT')&&($('#bossT').textContent=Math.floor(l/60)+':'+pad2(l%60));if(l<=0)bossEnd()},500)}
+function bossQ(){if(!boss)return;if(boss.i>=boss.qs.length)return bossEnd();const q=boss.qs[boss.i];const opts=shuffle(q[2].map((o,j)=>[o,j===0]));
+  $('#ovIn').innerHTML=`<div class="spread"><span class="tag acc">Boss · ${esc(boss.sec)}</span><span class="mono" id="bossT"></span></div><div class="mono" style="font-size:12px;color:var(--muted)">${boss.i+1} / ${boss.qs.length} · ${boss.r} right</div><div class="q">${esc(q[1])}</div><div class="opts">${opts.map((o,j)=>`<button class="opt" data-ok="${o[1]?1:0}"><kbd>${'ABCD'[j]}</kbd><span>${esc(o[0])}</span></button>`).join('')}</div><div class="row"><button class="btn ghost" id="bossQuit">Retreat</button></div>`;
+  $$('#ovIn .opt').forEach(b=>b.onclick=()=>{const ok=b.dataset.ok==='1';$$('#ovIn .opt').forEach(x=>{x.disabled=true;if(x.dataset.ok==='1')x.classList.add('ok')});if(!ok)b.classList.add('no');if(ok)boss.r++;recArea(q[0],ok);save();setTimeout(()=>{boss.i++;bossQ()},ok?450:1300)});
+  $('#bossQuit').onclick=()=>{clearInterval(boss.t);boss=null;closeOv()}}
+function bossEnd(){if(!boss)return;clearInterval(boss.t);const n=boss.qs.length,p=Math.round(boss.r/n*100),win=p>=70;
+  if(win){(S.badges||(S.badges={}))[boss.exam+'|'+boss.sec]=dkey()}save();
+  $('#ovIn').innerHTML=`<div class="bossend"><div class="big">${p}%</div><div class="rk">${win?'Section cleared':'Not this time'}</div><p class="sub">${boss.r} of ${n} right. ${win?'Badge earned for '+esc(boss.sec)+'.':'Revise the topics you missed, then fight again.'}</p><button class="btn primary" id="bossDone">Back</button></div>`;
+  $('#bossDone').onclick=()=>{closeOv();renderSyl()};boss=null}
+function openOv(){$('#ov').hidden=false;document.body.style.overflow='hidden'}
+function closeOv(){$('#ov').hidden=true;document.body.style.overflow='';try{speechSynthesis.cancel()}catch(e){}}
+/* ---- 7/8. bus mode + listen ---- */
+let bus=null;const canSpeak=typeof speechSynthesis!=='undefined';
+function speak(t){if(!canSpeak||!bus||!bus.listen)return Promise.resolve();return new Promise(ok=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);const v=speechSynthesis.getVoices().find(v=>/en-IN/i.test(v.lang))||speechSynthesis.getVoices().find(v=>/^en/i.test(v.lang));if(v)u.voice=v;u.rate=.95;u.onend=ok;u.onerror=ok;speechSynthesis.speak(u)}catch(e){ok()}})}
+function startBus(){const cards=dueCards().slice(0,25).map(c=>({k:'card',c,f:c.f,b:c.b,d:c.d}));
+  const extra=shuffle(QB.filter(q=>/GK|English|Defence/.test(q[0]))).slice(0,12).map(q=>({k:'q',f:q[1],b:q[2][0]+'. '+q[3],d:q[0]}));
+  bus={items:cards.concat(extra),i:0,start:Date.now(),listen:false,shown:false};openOv();busDraw()}
+function busDraw(){if(!bus)return;const it=bus.items[bus.i];const el=Math.floor((Date.now()-bus.start)/60000);
+  if(!it){$('#ovIn').innerHTML=`<div class="bossend"><div class="rk">Ride done</div><p class="sub">${bus.items.length} items reviewed.</p><button class="btn primary" id="busExit">Finish and log</button></div>`;$('#busExit').onclick=busExit;return}
+  $('#ovIn').innerHTML=`<div class="spread"><span class="tag acc">Bus mode</span><span class="mono" style="font-size:12px;color:var(--muted)">${bus.i+1} / ${bus.items.length} · ${el} min</span></div>
+   <div class="buscard" id="busCard" role="button" tabindex="0"><span class="tag">${esc(it.d)}</span><div class="bf">${esc(it.f)}</div>${bus.shown?`<div class="bb">${esc(it.b)}</div>`:'<div class="sub">Tap to reveal</div>'}</div>
+   <div class="busbtns"><button class="btn" id="busAgain" ${bus.shown?'':'disabled'}>Again</button><button class="btn primary" id="busGood" ${bus.shown?'':'disabled'}>Got it</button></div>
+   <div class="row" style="justify-content:space-between">${canSpeak?`<button class="btn sm" id="busListen" aria-pressed="${bus.listen}">${bus.listen?'Listening: on':'Listen mode'}</button>`:'<span></span>'}<button class="btn ghost sm" id="busExit">End ride</button></div>`;
+  $('#busCard').onclick=()=>{if(!bus.shown){bus.shown=true;busDraw();speak(it.b)}};
+  $('#busCard').onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();$('#busCard').click()}};
+  const nxt=g=>{if(it.k==='card'){it.c.box=g?Math.min(5,it.c.box+1):1;it.c.due=dkey(addDays(new Date(),g?INTERVAL[it.c.box]:0));save()}if(!g&&it.k==='card')bus.items.push(it);bus.i++;bus.shown=false;busDraw();busAuto()};
+  $('#busAgain').onclick=()=>nxt(false);$('#busGood').onclick=()=>nxt(true);$('#busExit').onclick=busExit;
+  if($('#busListen'))$('#busListen').onclick=()=>{bus.listen=!bus.listen;if(!bus.listen)try{speechSynthesis.cancel()}catch(e){};busDraw();busAuto()}}
+async function busAuto(){if(!bus||!bus.listen)return;const i=bus.i,it=bus.items[i];if(!it)return;await speak(it.f);await new Promise(r=>setTimeout(r,3500));if(!bus||bus.i!==i||!bus.listen)return;bus.shown=true;busDraw();await speak(it.b);await new Promise(r=>setTimeout(r,1500));if(!bus||bus.i!==i||!bus.listen)return;bus.i++;bus.shown=false;busDraw();busAuto()}
+function busExit(){if(!bus)return;const m=(Date.now()-bus.start)/60000;if(m>=1)logSession('GK & Current Affairs',m,dkey(),'Bus','Bus mode · '+bus.i+' items');bus=null;closeOv();renderToday();toast(m>=1?'Ride logged':'Ride ended')}
+/* ---- 6. speed ladder ---- */
+const lvl=t=>((S.drillLvl||{})[t]||0);
+/* ---- 9. cyber quest map ---- */
+const QUEST=[
+ ['Recon · Linux','Learn to live in the terminal.',[['q1','OverTheWire Bandit, levels 0 to 10','https://overthewire.org/wargames/bandit/'],['q2','OverTheWire Bandit, levels 11 to 20','https://overthewire.org/wargames/bandit/'],['q3','TryHackMe Pre Security path','https://tryhackme.com'],['q4','The Linux Command Line, first 10 chapters','https://linuxcommand.org/tlcl.php']]],
+ ['Network','See what really travels on the wire.',[['q5','Read How DNS Works','https://howdns.works'],['q6','Capture your own traffic in Wireshark and find a DNS query and a TCP handshake',''],['q7','Scan your own lab VM with Nmap (-sV, -O, -p-). Only scan machines you own.',''],['q8','Kurose & Ross: transport layer chapter','']]],
+ ['Web','Break web apps legally.',[['q9','PortSwigger: SQL injection apprentice labs','https://portswigger.net/web-security/sql-injection'],['q10','PortSwigger: cross-site scripting apprentice labs','https://portswigger.net/web-security/cross-site-scripting'],['q11','PortSwigger: authentication labs','https://portswigger.net/web-security/authentication'],['q12','Run OWASP Juice Shop locally and solve 5 challenges','https://owasp.org/projects/juice-shop']]],
+ ['Crypto','Understand what keeps data safe.',[['q13','CryptoHack introduction course','https://cryptohack.org'],['q14','Read How HTTPS Works','https://howhttps.works'],['q15','Write a Python script that hashes and verifies passwords with bcrypt','']]],
+ ['Exploit','Think like an attacker.',[['q16','pwn.college: first module','https://pwn.college'],['q17','Solve 5 beginner challenges on CTFlearn','https://ctflearn.com'],['q18','Play one live CTF from CTFtime with your team','https://ctftime.org']]],
+ ['Defend','Turn skills into a job.',[['q19','Read the OWASP cheat sheets for SQLi, XSS and authentication','https://cheatsheetseries.owasp.org'],['q20','Build a Python log analyser that flags failed SSH logins (resume project)',''],['q21','Write a one-page report on one real CVE','https://www.cve.org']]]];
+function renderQuest(){S.quest=S.quest||{};let unlocked=true;
+  $('#questMap').innerHTML=QUEST.map((z,zi)=>{const done=z[2].filter(x=>S.quest[x[0]]).length,pc=done/z[2].length;const open=unlocked;unlocked=open&&pc>=.6;
+    return `<div class="zone${open?'':' locked'}${pc===1?' clear':''}"><div class="node">${pc===1?'✓':zi+1}</div><div style="min-width:0;flex:1"><div class="spread"><b class="zt">${esc(z[0])}</b><span class="mono" style="font-size:12px;color:var(--muted)">${done}/${z[2].length}</span></div><div class="sub" style="margin:0 0 8px;font-size:13px">${open?esc(z[1]):'Locked. Finish 60% of the zone above to unlock.'}</div>
+    ${open?`<div class="panel list">${z[2].map(x=>`<label class="qm"><input type="checkbox" data-qm="${x[0]}" ${S.quest[x[0]]?'checked':''}><span>${esc(x[1])}${x[2]?` · <a href="${x[2]}" target="_blank" rel="noopener">open</a>`:''}</span></label>`).join('')}</div>`:''}</div></div>`}).join('');
+  $$('#questMap [data-qm]').forEach(c=>c.onchange=()=>{S.quest[c.dataset.qm]=c.checked;save();renderQuest()})}
+/* ---- 10. daily CTF flag ---- */
+const CTFW=['firewall','cipher','packet','kernel','exploit','payload','honeypot','malware','sandbox','token','botnet','phishing','rootkit','backdoor','checksum','subnet','proxy','keylogger','zeroday','spoofing'];
+const PORTS=[[22,'ssh'],[21,'ftp'],[23,'telnet'],[25,'smtp'],[53,'dns'],[80,'http'],[110,'pop3'],[143,'imap'],[443,'https'],[3306,'mysql'],[3389,'rdp'],[445,'smb']];
+function seedOf(k){let h=7;for(const c of k)h=(h*31+c.charCodeAt(0))%100003;return h}
+function dailyCtf(){const k=dkey(),h=seedOf(k),w=CTFW[h%CTFW.length],t=h%6;
+  const caesar=(s,n)=>s.replace(/[a-z]/g,c=>String.fromCharCode((c.charCodeAt(0)-97+n)%26+97));
+  if(t===0)return{type:'Base64',clue:'Decode this Base64 string.',data:btoa(w),ans:w};
+  if(t===1)return{type:'Caesar cipher',clue:'Every letter was shifted forward by 3. Shift it back.',data:caesar(w,3),ans:w};
+  if(t===2)return{type:'Hex',clue:'Convert this hex to ASCII text.',data:[...w].map(c=>c.charCodeAt(0).toString(16)).join(' '),ans:w};
+  if(t===3)return{type:'ROT13',clue:'Apply ROT13.',data:caesar(w,13),ans:w};
+  if(t===4){const n=(h%223)+32;return{type:'Binary',clue:'Convert this 8-bit binary to decimal.',data:n.toString(2).padStart(8,'0'),ans:String(n)}}
+  const p=PORTS[h%PORTS.length];return{type:'Ports',clue:'Which service runs on this default TCP port? One word, lowercase.',data:String(p[0]),ans:p[1]}}
+function flagStreak(){const f=S.flags||{};let n=0,d=new Date();if(!f[dkey(d)])d=addDays(d,-1);while(f[dkey(d)]){n++;d=addDays(d,-1)}return n}
+function renderCtf(){const c=dailyCtf(),got=(S.flags||{})[dkey()];
+  $('#ctfBox').innerHTML=`<div class="spread"><span class="tag acc">${esc(c.type)}</span><span class="mono" style="font-size:12px;color:var(--muted)">Flag streak: ${flagStreak()} days</span></div>
+   <p style="margin:12px 0 6px">${esc(c.clue)}</p><div class="ctfdata">${esc(c.data)}</div>
+   ${got?`<p class="sub" style="margin:12px 0 0"><b style="color:var(--good)">Captured.</b> Answer: flag{${esc(c.ans)}}. New flag tomorrow.</p>`:`<div class="row" style="margin-top:12px"><input type="text" id="ctfIn" autocomplete="off" placeholder="flag{...} or just the answer" style="flex:1 1 200px"><button class="btn primary" id="ctfGo">Submit flag</button></div><p class="sub" id="ctfMsg" style="margin:8px 0 0"></p>`}`;
+  if(!got){const sub=()=>{const v=$('#ctfIn').value.trim().toLowerCase().replace(/^flag\{|\}$/g,'');if(!v)return;if(v===c.ans){(S.flags||(S.flags={}))[dkey()]=true;save();toast('Flag captured');renderCtf()}else $('#ctfMsg').textContent='Not it. Check each step again.'};
+    $('#ctfGo').onclick=sub;$('#ctfIn').onkeydown=e=>{if(e.key==='Enter')sub()}}}
+
+loadLocalPapers();buildNav();initFocus();initSyl();initDrill();initMcq();initCards();initNotes();initProg();initSet();
+$$('#pTabs button').forEach(b=>b.onclick=()=>ptab(b.dataset.p));
+applyTheme();fillSubjects();
+const h=(location.hash||'').slice(1);go(VIEWS.some(v=>v[0]===h)?h:(S.running?'focus':'today'));
+setSync('Saved on this device');
+connect();
+})();
+</script>
+
+</body></html>
