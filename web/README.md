@@ -20,3 +20,5 @@ These openly licensed books are split into the daily-plan page ranges under `boo
 | Grinstead & Snell, *Introduction to Probability* | GNU FDL |
 
 Other free books (NCERT, OSTEP, Maheshwari & Smid, Wirth) are free to read but not licensed for re-hosting, so the site links to their official copies. Purchased books are never hosted.
+
+For any book that is read by page range (purchased books included), a visitor can tap **Add my PDF** and pick their own copy. It is stored only in that browser (IndexedDB) and never uploaded; after that, **Read here** opens just the plan's pages from it.
