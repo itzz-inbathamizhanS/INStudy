@@ -1624,7 +1624,11 @@ function freeUrl(s){const p=String(s[2]||(PLAN.B[s[0]]||[])[1]||'');const f=p.sp
   if(/NCERT/.test(p))return 'https://ncert.nic.in/textbook/pdf/'+f;
   return FREEBOOK[f]?FREEBOOK[f]+'#page='+s[3]:null}
 /* one place that draws the read button(s) for a segment */
+const HOSTED=['Algorithms_Jeff_Erickson','Data_Structures_Open_Data_Structures_Java','Discrete_Math_MIT_Mathematics_for_Computer_Science','Probability_Grinstead_Snell'];
+function hostedPath(seg){const p=cloudPath(seg).slice(CLOUD.length);return HOSTED.includes(p.split('/')[0])?'books/'+p:null}
 function readBtn(seg,label,primary){
+  const hp=!OWNER&&hostedPath(seg);
+  if(hp)return `<button class="btn sm${primary?' primary':' ghost'}" data-rd="${esc(hp)}" data-rdt="${esc(seg[1])}" data-rdo="${seg[2]?0:seg[3]-1}">${esc(label)}</button>`;
   if(OWNER)return `<button class="btn sm${primary?' primary':' ghost'}" data-rd="${esc(cloudPath(seg))}" data-rdt="${esc(seg[1])}" data-rdo="${seg[2]?0:seg[3]-1}">${esc(label)}</button>`;
   const u=freeUrl(seg);
   return u?`<a class="btn sm${primary?' primary':' ghost'}" href="${esc(u)}" target="_blank" rel="noopener">Open free copy</a>`:`<span class="mono" style="font-size:12px;color:var(--muted)">Use your own copy</span>`}
@@ -1672,6 +1676,7 @@ async function cachePut(k,v){const db=await cacheDB();if(!db)return;return new P
 async function cacheHas(k){const db=await cacheDB();if(!db)return false;return new Promise(res=>{try{const q=db.transaction('f').objectStore('f').getKey(k);q.onsuccess=()=>res(q.result!==undefined);q.onerror=()=>res(false)}catch(e){res(false)}})}
 async function fetchPdf(path){
   const hit=await cacheGet(path);if(hit)return new Uint8Array(hit);
+  if(path.startsWith('books/')){let r;try{r=await fetch(path)}catch(e){throw{code:'net'}}if(!r.ok)throw{code:'not_found'};const a=new Uint8Array(await r.arrayBuffer());cachePut(path,a.buffer.slice(0)).catch(()=>{});return a}
   const f=await getFiles();if(!f)throw{code:'nofiles'};
   const parts=[];let off=0,size=Infinity,rev=null,tries=0;
   while(off<size){let r;
