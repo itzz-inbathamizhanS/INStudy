@@ -420,7 +420,7 @@ body.guest .path,body.guest #dyOff,body.guest .owneronly{display:none}
   <!-- EXAMS -->
   <section class="view" id="v-exam" hidden>
     <div class="head"><div><h1 id="exTitle">Exams</h1><p class="sub" id="exSub">One page per exam: only its syllabus, the chapters in your books for each topic, and a tick to mark it done. No deadlines.</p></div></div>
-    <div class="row" style="justify-content:space-between;align-items:center;gap:8px;flex-wrap:nowrap"><div class="exnav" id="exNav" role="tablist" aria-label="Choose an exam" style="flex:1;min-width:0"></div><button class="btn sm" id="exPick">Choose exams</button></div>
+    <div class="row" style="justify-content:space-between;align-items:center;gap:8px;flex-wrap:nowrap"><div class="exnav" id="exNav" role="tablist" aria-label="Choose an exam" style="flex:1;min-width:0"></div><button class="btn sm" id="exBooks" title="Pick your study library folder once. Matching books are kept in this browser only.">Add my books</button><button class="btn sm" id="exPick">Choose exams</button></div>
     <div class="exsum" id="exSum"></div>
     <div class="srcline" id="exSrc"></div>
     <div class="row" style="justify-content:space-between;align-items:center;gap:10px"><div class="chips" id="exFlt"></div><button class="btn ghost sm" id="exOpenAll">Show all books</button></div>
@@ -1586,6 +1586,7 @@ function renderExam(){
   if(!exCur||!S.syl[exCur])exCur=ex[0];
   if(!ex.includes(exCur))exCur=ex[0];
   $('#exPick').onclick=()=>openSetup(false);
+  $('#exBooks').onclick=pickOwnFolder;
   const e=exCur,meta=EXAM_SYL[e]||{},st=exStats(e);
   $('#exNav').innerHTML=ex.map(k=>{const s=exStats(k);return `<button role="tab" aria-selected="${k===e}" data-ex="${esc(k)}">${esc(exLabel(k))} <span class="mono">${s.d}/${s.n}</span></button>`}).join('');
   $$('#exNav [data-ex]').forEach(b=>b.onclick=()=>{exCur=b.dataset.ex;try{localStorage.setItem('studydesk-exam',exCur)}catch(x){}exOpen.clear();renderExam();window.scrollTo(0,0)});
@@ -1646,6 +1647,16 @@ function pickOwn(book){const inp=document.createElement('input');inp.type='file'
     toast('Adding your book…');await cachePut('own:'+book,f);
     if(!(await cacheHas('own:'+book))){toast('Could not store it. Free some browser space and try again.');return}
     OWNSET.add(book);toast('Added. Tap Read here to open your pages.');render(cur)};
+  inp.click()}
+/* add many books at once: pick the library folder (or several PDFs) and match by file name */
+function ownKeys(){const ks=new Set();PLAN.B.forEach(b=>{const k=b[1]&&b[1].split('/').pop().replace(/\.pdf$/i,'');if(k)ks.add(k)});return ks}
+function pickOwnFolder(){const inp=document.createElement('input');inp.type='file';inp.multiple=true;inp.accept='application/pdf,.pdf';
+  if(!/Android|iPhone|iPad/i.test(navigator.userAgent))inp.setAttribute('webkitdirectory','');
+  inp.onchange=async()=>{const fs=[...(inp.files||[])];if(!fs.length)return;const keys=ownKeys(),lower={};keys.forEach(k=>lower[k.toLowerCase()]=k);
+    const hits=fs.map(f=>[lower[f.name.replace(/\.pdf$/i,'').toLowerCase()],f]).filter(x=>x[0]);
+    if(!hits.length){toast('No matching books found. Pick the folder with your study PDFs.');return}
+    let ok=0;for(const [k,f] of hits){toast('Adding '+(ok+1)+' of '+hits.length+'…');await cachePut('own:'+k,f);if(await cacheHas('own:'+k)){OWNSET.add(k);ok++}}
+    toast(ok+' book'+(ok===1?'':'s')+' added. Tap Read here on any topic.');render(cur)};
   inp.click()}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-own]');if(b){e.preventDefault();pickOwn(b.dataset.own)}});
 /* first-run setup: which exams this person studies for */
